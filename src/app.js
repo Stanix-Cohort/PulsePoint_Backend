@@ -15,6 +15,10 @@ app.use(
 
 app.use(express.json());
 
+
+
+// Routes
+
 // app.get("/api/health", (req, res) => {
 //   res.status(200).json({
 //     success: true,
@@ -22,16 +26,11 @@ app.use(express.json());
 //   });
 // });
 
-// Routes
 const authRoutes = require("./routes/authRoute");
-
-
-//====================================================
+const hospitalRoutes = require("./routes/hospitalRoute");
 
 app.use("/api/auth", authRoutes);
-
-
-//====================================================
+app.use("/api/hospitals", hospitalRoutes);
 
 const error = require("./middleware/errorMiddleware");
 
