@@ -113,15 +113,17 @@ A donor or hospital registration creates a `User` record and its corresponding r
 | Route | Method | Access Level | Description |
 | :--- | :--- | :--- | :--- |
 | `/api/auth/register/donor` | `POST` | Public | Register a donor account |
-| `/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
 | `/api/auth/register/hospital` | `POST` | Public | Register a hospital account |
 | `/api/auth/login` | `POST` | Public | Authenticate user & issue a JWT token |
-| `/api/donors/me` | `PATCH` | `DONOR` | Update donor details (blood type, phone, address) |
+| `/api/donors/me` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
+| `/api/hospitals/profile` | `PATCH` | `DONOR` | Update donor details (phone, address) |
 | `/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
 | `/api/requests` | `GET` | `DONOR`, `HOSPITAL` | DONOR → compatible open requests; HOSPITAL → its own requests |
 | `/api/requests/:id/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
 | `/api/requests/:id/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
 | `/api/requests/:id/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion |
+| `/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
+
 
 ---
 

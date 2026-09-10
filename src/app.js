@@ -28,9 +28,12 @@ app.use(express.json());
 
 const authRoutes = require("./routes/authRoute");
 const hospitalRoutes = require("./routes/hospitalRoute");
+const donorRoutes = require("./routes/donorRoute");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/hospitals", hospitalRoutes);
+app.use("/api/donors", donorRoutes);
+
 
 const error = require("./middleware/errorMiddleware");
 
