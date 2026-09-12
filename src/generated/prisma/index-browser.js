@@ -147,8 +147,14 @@ exports.Prisma.HospitalScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   hospitalName: 'hospitalName',
+  licenseId: 'licenseId',
   phoneNumber: 'phoneNumber',
+  state: 'state',
   address: 'address',
+  logoUrl: 'logoUrl',
+  contactName: 'contactName',
+  contactPhone: 'contactPhone',
+  contactRole: 'contactRole',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -61,7 +61,7 @@ try {
 //====================================================
 
 const registerHospital = async (userData) => {
-  const { email, passwordHash, hospitalName, phoneNumber, address } =
+  const { email, passwordHash, hospitalName, phoneNumber, address, state, licenseId, contactName, contactPhone, contactRole } =
     userData;
   const normalizeEmail = email.toLowerCase().trim();
 
@@ -90,6 +90,11 @@ const registerHospital = async (userData) => {
       hospitalName,
       phoneNumber,
       address,
+      state,
+      licenseId,
+      contactName,
+      contactPhone,
+      contactRole,
     },
   });
   const token = generateToken({ sub: user.id, role: user.role });

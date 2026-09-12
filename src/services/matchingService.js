@@ -1,16 +1,17 @@
 // src/services/matchingService.js
 
 const prisma = require("../config/prisma");
-const { getCompatibleDonors, getCompatibleRecipients } = require("../utils/bloodCompatibility");
-
-
+const {
+  getCompatibleDonors,
+  getCompatibleRecipients,
+} = require("../utils/bloodCompatibility");
 
 const findEligibleDonors = async (requestId) => {
   // 1. Fetch the blood request details
   const request = await prisma.bloodRequest.findUnique({
     where: { id: requestId },
   });
-console.log("Blood Request ID", request);
+  console.log("Blood Request ID", request);
   if (!request) {
     const error = new Error("Blood request not found.");
     error.statusCode = 404;
@@ -21,7 +22,9 @@ console.log("Blood Request ID", request);
   const compatibleTypes = getCompatibleDonors(request.bloodType);
 
   if (compatibleTypes.length === 0) {
-    const error = new Error("No compatible donor blood types found for this request.");
+    const error = new Error(
+      "No compatible donor blood types found for this request.",
+    );
     error.statusCode = 400;
     throw error;
   }
@@ -54,34 +57,57 @@ const findMatchingRequests = async (userId) => {
   });
 
   if (!donor) {
-      const error = new Error("Donor profile not found.");
-      error.statusCode = 404;
-      throw error;
+    const error = new Error("Donor profile not found.");
+    error.statusCode = 404;
+    throw error;
   }
 
   if (!donor.isAvailable) {
-   const error = new Error("You are currently marked as being unavailable to donate. Please update your availability status to find matching requests.");
-   error.statusCode = 400;
-   throw error;
+    const error = new Error(
+      "You are currently marked as being unavailable to donate. Please update your availability status to find matching requests.",
+    );
+    error.statusCode = 400;
+    throw error;
   }
 
   // 2. Determine all recipient blood types this donor can give to
-    const validRecipient = getCompatibleRecipients(donor.bloodType);
-    
-    if (validRecipient.length === 0) {
-        const error = new Error("No compatible recipient blood types found for your blood type.");
-        error.statusCode = 400;
-        throw error;
-    }
+  const validRecipient = getCompatibleRecipients(donor.bloodType);
+
+  if (validRecipient.length === 0) {
+    const error = new Error(
+      "No compatible recipient blood types found for your blood type.",
+    );
+    error.statusCode = 400;
+    throw error;
+  }
 
   // 3. Find active blood requests matching those compatible recipient blood types
   const matchingRequests = await prisma.bloodRequest.findMany({
     where: {
       bloodType: { in: validRecipient },
-      status: { in: ["OPEN", "PARTIALLY_FULFILLED"] }, // Only consider active requests
+      status: { in: ["OPEN", "PARTIALLY_FULFILLED"] },
     },
+
+    select: {
+      id: true,
+      bloodType: true,
+      units: true,
+      urgencyLevel: true,
+      status: true,
+      createdAt: true,
+
+      hospital: {
+        select: {
+          hospitalName: true,
+          phoneNumber: true,
+          address: true,
+          state: true,
+        },
+      },
+    },
+
     orderBy: {
-      createdAt: "desc", // Show newest requests first
+      createdAt: "desc",
     },
   });
 

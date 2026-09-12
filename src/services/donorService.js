@@ -17,7 +17,6 @@ const getDonorByUserId = async (userId) => {
 
 const updateDonorProfile = async (userId, donorData) => {
 
-    const { fullName, bloodType, dateOfBirth, phoneNumber, address, state, isAvailable } = donorData;
   const updateData = {};
 
   if (donorData.fullName !== undefined)

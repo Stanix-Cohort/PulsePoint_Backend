@@ -1,3 +1,4 @@
+const { use } = require("react");
 const requestService = require("../services/bloodRequestService");
 const {
   findEligibleDonors,
@@ -15,6 +16,44 @@ const createBloodRequest = async (req, res, next) => {
       success: true,
       message: "Blood request created successfully",
       data: bloodRequest,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//===========================================================
+
+const getBloodRequests = async (req, res, next) => {
+  try {
+    const bloodRequests = await requestService.getAllBloodRequests(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      count: bloodRequests.length,
+      data: bloodRequests,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//===========================================================
+
+const updateBloodRequest = async (req, res, next) => {
+  try {
+    const { requestId } = req.params;
+    const requestData = req.body;
+
+    const updatedBloodRequest = await requestService.updateBloodRequest(
+      requestId,
+      requestData,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Blood request updated successfully",
+      data: updatedBloodRequest,
     });
   } catch (error) {
     next(error);
@@ -42,8 +81,8 @@ const getMatchingDonors = async (req, res, next) => {
     // return res.status(500).json({
     //   success: false,
     //   message: "An error occurred while fetching matching donors.",
-      // });
-      next(error);
+    // });
+    next(error);
   }
 };
 
@@ -51,7 +90,7 @@ const getMatchingDonors = async (req, res, next) => {
 
 const getDonorMatches = async (req, res, next) => {
   try {
-    const userId = req.user.id 
+    const userId = req.user.id;
 
     const requests = await findMatchingRequests(userId);
 
@@ -68,9 +107,15 @@ const getDonorMatches = async (req, res, next) => {
     // return res.status(500).json({
     //   success: false,
     //   message: "Failed to fetch matching requests.",
-      // });
-        next(error);
+    // });
+    next(error);
   }
 };
 
-module.exports = { createBloodRequest, getMatchingDonors, getDonorMatches };
+module.exports = {
+  createBloodRequest,
+  getBloodRequests,
+  updateBloodRequest,
+  getMatchingDonors,
+  getDonorMatches,
+};

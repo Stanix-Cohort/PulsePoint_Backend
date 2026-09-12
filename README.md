@@ -51,8 +51,14 @@ The database separates authentication and account identity from role-specific in
   * `id` (PK, UUID)
   * `userId` (FK → `User.id`, Unique)
   * `hospitalName` (VARCHAR)
+  * `licenseId` (INT)
   * `phoneNumber` (VARCHAR)
   * `address` (TEXT)
+  * `state` (VARCHAR)
+  * `contactName` (VARCHAR)
+  * `contactPhone` (VARCHAR)
+  * `contactRole` (VARCHAR)
+
   * `createdAt`, `updatedAt` (TIMESTAMPTZ)
 
 * **`BloodRequest`**
@@ -118,7 +124,9 @@ A donor or hospital registration creates a `User` record and its corresponding r
 | `/api/donors/me` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
 | `/api/hospitals/profile` | `PATCH` | `DONOR` | Update donor details (phone, address) |
 | `/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
-| `/api/requests` | `GET` | `DONOR`, `HOSPITAL` | DONOR → compatible open requests; HOSPITAL → its own requests |
+| `/api/requests/:id/update` | `PATCH` | `HOSPITAL` | Update blood request |
+| `/api/requests` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own requests |
+| `/api/requests/mymatch` | `GET` | `DONOR` |  compatible open requests |
 | `/api/requests/:id/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
 | `/api/requests/:id/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
 | `/api/requests/:id/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion |

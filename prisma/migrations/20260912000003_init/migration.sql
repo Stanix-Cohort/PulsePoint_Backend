@@ -47,8 +47,14 @@ CREATE TABLE "hospitals" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "hospitalName" TEXT NOT NULL,
+    "licenseId" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
     "address" TEXT NOT NULL,
+    "logoUrl" TEXT,
+    "contactName" TEXT NOT NULL,
+    "contactPhone" TEXT NOT NULL,
+    "contactRole" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -105,6 +111,9 @@ CREATE UNIQUE INDEX "donors_userId_key" ON "donors"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "hospitals_userId_key" ON "hospitals"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "hospitals_licenseId_key" ON "hospitals"("licenseId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "responses_requestId_donorId_key" ON "responses"("requestId", "donorId");
