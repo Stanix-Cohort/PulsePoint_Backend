@@ -1,30 +1,45 @@
-// src/controllers/hospitalController.js
-const prisma = require('../config/prisma');
+const prisma = require("../config/prisma");
 
 // Create or Update Hospital Profile
 const upsertHospitalProfile = async (req, res, next) => {
   try {
     const userId = req.user.sub || req.user.id;
-    const { hospitalName, phoneNumber, address } = req.body;
+    const {
+      hospitalName,
+      licenseId,
+      phoneNumber,
+      state,
+      address,
+      logoUrl,
+      contactName,
+      contactPhone,
+      contactRole,
+    } = req.body;
+
+    const hospitalData = {
+      hospitalName,
+      licenseId,
+      phoneNumber,
+      state,
+      address,
+      logoUrl,
+      contactName,
+      contactPhone,
+      contactRole,
+    };
 
     const hospital = await prisma.hospital.upsert({
       where: { userId },
-      update: {
-        hospitalName,
-        phoneNumber,
-        address,
-      },
+      update: hospitalData,
       create: {
         userId,
-        hospitalName,
-        phoneNumber,
-        address,
+        ...hospitalData,
       },
     });
 
     return res.status(200).json({
       success: true,
-      message: 'Hospital profile saved successfully',
+      message: "Hospital profile saved successfully",
       data: hospital,
     });
   } catch (error) {
@@ -42,7 +57,9 @@ const getHospitalProfile = async (req, res, next) => {
     });
 
     if (!hospital) {
-      return res.status(404).json({ success: false, message: 'Hospital profile not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Hospital profile not found" });
     }
 
     return res.status(200).json({
