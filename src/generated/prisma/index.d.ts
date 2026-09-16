@@ -43,6 +43,11 @@ export type RequestResponse = $Result.DefaultSelection<Prisma.$RequestResponsePa
  * 
  */
 export type Donation = $Result.DefaultSelection<Prisma.$DonationPayload>
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
 
 /**
  * Enums
@@ -98,6 +103,32 @@ export const ResponseStatus: {
 
 export type ResponseStatus = (typeof ResponseStatus)[keyof typeof ResponseStatus]
 
+
+export const DonationOutcome: {
+  DONATED: 'DONATED',
+  NO_SHOW: 'NO_SHOW'
+};
+
+export type DonationOutcome = (typeof DonationOutcome)[keyof typeof DonationOutcome]
+
+
+export const NotificationType: {
+  NEW_BLOOD_REQUEST: 'NEW_BLOOD_REQUEST',
+  RESPONSE_ACCEPTED: 'RESPONSE_ACCEPTED',
+  DONATION_CONFIRMED: 'DONATION_CONFIRMED',
+  REQUEST_CANCELLED: 'REQUEST_CANCELLED'
+};
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const Gender: {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE'
+};
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
+
 }
 
 export type Role = $Enums.Role
@@ -119,6 +150,18 @@ export const RequestStatus: typeof $Enums.RequestStatus
 export type ResponseStatus = $Enums.ResponseStatus
 
 export const ResponseStatus: typeof $Enums.ResponseStatus
+
+export type DonationOutcome = $Enums.DonationOutcome
+
+export const DonationOutcome: typeof $Enums.DonationOutcome
+
+export type NotificationType = $Enums.NotificationType
+
+export const NotificationType: typeof $Enums.NotificationType
+
+export type Gender = $Enums.Gender
+
+export const Gender: typeof $Enums.Gender
 
 /**
  * ##  Prisma Client ʲˢ
@@ -300,6 +343,16 @@ export class PrismaClient<
     * ```
     */
   get donation(): Prisma.DonationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -739,7 +792,8 @@ export namespace Prisma {
     Hospital: 'Hospital',
     BloodRequest: 'BloodRequest',
     RequestResponse: 'RequestResponse',
-    Donation: 'Donation'
+    Donation: 'Donation',
+    Notification: 'Notification'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -755,7 +809,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "donor" | "hospital" | "bloodRequest" | "requestResponse" | "donation"
+      modelProps: "user" | "donor" | "hospital" | "bloodRequest" | "requestResponse" | "donation" | "notification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1203,6 +1257,80 @@ export namespace Prisma {
           }
         }
       }
+      Notification: {
+        payload: Prisma.$NotificationPayload<ExtArgs>
+        fields: Prisma.NotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          update: {
+            args: Prisma.NotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.NotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1317,6 +1445,7 @@ export namespace Prisma {
     bloodRequest?: BloodRequestOmit
     requestResponse?: RequestResponseOmit
     donation?: DonationOmit
+    notification?: NotificationOmit
   }
 
   /* Types for Logging */
@@ -1428,11 +1557,13 @@ export namespace Prisma {
    */
 
   export type DonorCountOutputType = {
+    notifications: number
     donations: number
     responses: number
   }
 
   export type DonorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | DonorCountOutputTypeCountNotificationsArgs
     donations?: boolean | DonorCountOutputTypeCountDonationsArgs
     responses?: boolean | DonorCountOutputTypeCountResponsesArgs
   }
@@ -1446,6 +1577,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the DonorCountOutputType
      */
     select?: DonorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DonorCountOutputType without action
+   */
+  export type DonorCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -1468,10 +1606,12 @@ export namespace Prisma {
    */
 
   export type HospitalCountOutputType = {
+    notifications: number
     requests: number
   }
 
   export type HospitalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | HospitalCountOutputTypeCountNotificationsArgs
     requests?: boolean | HospitalCountOutputTypeCountRequestsArgs
   }
 
@@ -1489,6 +1629,13 @@ export namespace Prisma {
   /**
    * HospitalCountOutputType without action
    */
+  export type HospitalCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * HospitalCountOutputType without action
+   */
   export type HospitalCountOutputTypeCountRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BloodRequestWhereInput
   }
@@ -1499,11 +1646,13 @@ export namespace Prisma {
    */
 
   export type BloodRequestCountOutputType = {
+    notifications: number
     donations: number
     responses: number
   }
 
   export type BloodRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | BloodRequestCountOutputTypeCountNotificationsArgs
     donations?: boolean | BloodRequestCountOutputTypeCountDonationsArgs
     responses?: boolean | BloodRequestCountOutputTypeCountResponsesArgs
   }
@@ -1517,6 +1666,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the BloodRequestCountOutputType
      */
     select?: BloodRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BloodRequestCountOutputType without action
+   */
+  export type BloodRequestCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
   /**
@@ -2688,6 +2844,7 @@ export namespace Prisma {
     fullName: string | null
     bloodType: $Enums.BloodType | null
     dateOfBirth: Date | null
+    gender: $Enums.Gender | null
     phoneNumber: string | null
     address: string | null
     state: string | null
@@ -2702,6 +2859,7 @@ export namespace Prisma {
     fullName: string | null
     bloodType: $Enums.BloodType | null
     dateOfBirth: Date | null
+    gender: $Enums.Gender | null
     phoneNumber: string | null
     address: string | null
     state: string | null
@@ -2716,6 +2874,7 @@ export namespace Prisma {
     fullName: number
     bloodType: number
     dateOfBirth: number
+    gender: number
     phoneNumber: number
     address: number
     state: number
@@ -2732,6 +2891,7 @@ export namespace Prisma {
     fullName?: true
     bloodType?: true
     dateOfBirth?: true
+    gender?: true
     phoneNumber?: true
     address?: true
     state?: true
@@ -2746,6 +2906,7 @@ export namespace Prisma {
     fullName?: true
     bloodType?: true
     dateOfBirth?: true
+    gender?: true
     phoneNumber?: true
     address?: true
     state?: true
@@ -2760,6 +2921,7 @@ export namespace Prisma {
     fullName?: true
     bloodType?: true
     dateOfBirth?: true
+    gender?: true
     phoneNumber?: true
     address?: true
     state?: true
@@ -2847,6 +3009,7 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
@@ -2878,12 +3041,14 @@ export namespace Prisma {
     fullName?: boolean
     bloodType?: boolean
     dateOfBirth?: boolean
+    gender?: boolean
     phoneNumber?: boolean
     address?: boolean
     state?: boolean
     isAvailable?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    notifications?: boolean | Donor$notificationsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     donations?: boolean | Donor$donationsArgs<ExtArgs>
     responses?: boolean | Donor$responsesArgs<ExtArgs>
@@ -2896,6 +3061,7 @@ export namespace Prisma {
     fullName?: boolean
     bloodType?: boolean
     dateOfBirth?: boolean
+    gender?: boolean
     phoneNumber?: boolean
     address?: boolean
     state?: boolean
@@ -2911,6 +3077,7 @@ export namespace Prisma {
     fullName?: boolean
     bloodType?: boolean
     dateOfBirth?: boolean
+    gender?: boolean
     phoneNumber?: boolean
     address?: boolean
     state?: boolean
@@ -2926,6 +3093,7 @@ export namespace Prisma {
     fullName?: boolean
     bloodType?: boolean
     dateOfBirth?: boolean
+    gender?: boolean
     phoneNumber?: boolean
     address?: boolean
     state?: boolean
@@ -2934,8 +3102,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DonorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "bloodType" | "dateOfBirth" | "phoneNumber" | "address" | "state" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["donor"]>
+  export type DonorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "bloodType" | "dateOfBirth" | "gender" | "phoneNumber" | "address" | "state" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["donor"]>
   export type DonorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | Donor$notificationsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     donations?: boolean | Donor$donationsArgs<ExtArgs>
     responses?: boolean | Donor$responsesArgs<ExtArgs>
@@ -2951,6 +3120,7 @@ export namespace Prisma {
   export type $DonorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Donor"
     objects: {
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       donations: Prisma.$DonationPayload<ExtArgs>[]
       responses: Prisma.$RequestResponsePayload<ExtArgs>[]
@@ -2961,6 +3131,7 @@ export namespace Prisma {
       fullName: string
       bloodType: $Enums.BloodType
       dateOfBirth: Date
+      gender: $Enums.Gender
       phoneNumber: string
       address: string
       state: string
@@ -3361,6 +3532,7 @@ export namespace Prisma {
    */
   export interface Prisma__DonorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    notifications<T extends Donor$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Donor$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     donations<T extends Donor$donationsArgs<ExtArgs> = {}>(args?: Subset<T, Donor$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     responses<T extends Donor$responsesArgs<ExtArgs> = {}>(args?: Subset<T, Donor$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequestResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3398,6 +3570,7 @@ export namespace Prisma {
     readonly fullName: FieldRef<"Donor", 'String'>
     readonly bloodType: FieldRef<"Donor", 'BloodType'>
     readonly dateOfBirth: FieldRef<"Donor", 'DateTime'>
+    readonly gender: FieldRef<"Donor", 'Gender'>
     readonly phoneNumber: FieldRef<"Donor", 'String'>
     readonly address: FieldRef<"Donor", 'String'>
     readonly state: FieldRef<"Donor", 'String'>
@@ -3805,6 +3978,30 @@ export namespace Prisma {
   }
 
   /**
+   * Donor.notifications
+   */
+  export type Donor$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * Donor.donations
    */
   export type Donor$donationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4099,6 +4296,7 @@ export namespace Prisma {
     contactRole?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    notifications?: boolean | Hospital$notificationsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     requests?: boolean | Hospital$requestsArgs<ExtArgs>
     _count?: boolean | HospitalCountOutputTypeDefaultArgs<ExtArgs>
@@ -4156,6 +4354,7 @@ export namespace Prisma {
 
   export type HospitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "hospitalName" | "licenseId" | "phoneNumber" | "state" | "address" | "logoUrl" | "contactName" | "contactPhone" | "contactRole" | "createdAt" | "updatedAt", ExtArgs["result"]["hospital"]>
   export type HospitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | Hospital$notificationsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     requests?: boolean | Hospital$requestsArgs<ExtArgs>
     _count?: boolean | HospitalCountOutputTypeDefaultArgs<ExtArgs>
@@ -4170,6 +4369,7 @@ export namespace Prisma {
   export type $HospitalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Hospital"
     objects: {
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       requests: Prisma.$BloodRequestPayload<ExtArgs>[]
     }
@@ -4581,6 +4781,7 @@ export namespace Prisma {
    */
   export interface Prisma__HospitalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    notifications<T extends Hospital$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Hospital$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     requests<T extends Hospital$requestsArgs<ExtArgs> = {}>(args?: Subset<T, Hospital$requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BloodRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5026,6 +5227,30 @@ export namespace Prisma {
   }
 
   /**
+   * Hospital.notifications
+   */
+  export type Hospital$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * Hospital.requests
    */
   export type Hospital$requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5081,18 +5306,21 @@ export namespace Prisma {
   }
 
   export type BloodRequestAvgAggregateOutputType = {
-    units: number | null
+    unitsRequired: number | null
+    unitsFulfilled: number | null
   }
 
   export type BloodRequestSumAggregateOutputType = {
-    units: number | null
+    unitsRequired: number | null
+    unitsFulfilled: number | null
   }
 
   export type BloodRequestMinAggregateOutputType = {
     id: string | null
     hospitalId: string | null
     bloodType: $Enums.BloodType | null
-    units: number | null
+    unitsRequired: number | null
+    unitsFulfilled: number | null
     notes: string | null
     urgencyLevel: $Enums.RequestUrgency | null
     status: $Enums.RequestStatus | null
@@ -5104,7 +5332,8 @@ export namespace Prisma {
     id: string | null
     hospitalId: string | null
     bloodType: $Enums.BloodType | null
-    units: number | null
+    unitsRequired: number | null
+    unitsFulfilled: number | null
     notes: string | null
     urgencyLevel: $Enums.RequestUrgency | null
     status: $Enums.RequestStatus | null
@@ -5116,7 +5345,8 @@ export namespace Prisma {
     id: number
     hospitalId: number
     bloodType: number
-    units: number
+    unitsRequired: number
+    unitsFulfilled: number
     notes: number
     urgencyLevel: number
     status: number
@@ -5127,18 +5357,21 @@ export namespace Prisma {
 
 
   export type BloodRequestAvgAggregateInputType = {
-    units?: true
+    unitsRequired?: true
+    unitsFulfilled?: true
   }
 
   export type BloodRequestSumAggregateInputType = {
-    units?: true
+    unitsRequired?: true
+    unitsFulfilled?: true
   }
 
   export type BloodRequestMinAggregateInputType = {
     id?: true
     hospitalId?: true
     bloodType?: true
-    units?: true
+    unitsRequired?: true
+    unitsFulfilled?: true
     notes?: true
     urgencyLevel?: true
     status?: true
@@ -5150,7 +5383,8 @@ export namespace Prisma {
     id?: true
     hospitalId?: true
     bloodType?: true
-    units?: true
+    unitsRequired?: true
+    unitsFulfilled?: true
     notes?: true
     urgencyLevel?: true
     status?: true
@@ -5162,7 +5396,8 @@ export namespace Prisma {
     id?: true
     hospitalId?: true
     bloodType?: true
-    units?: true
+    unitsRequired?: true
+    unitsFulfilled?: true
     notes?: true
     urgencyLevel?: true
     status?: true
@@ -5261,7 +5496,8 @@ export namespace Prisma {
     id: string
     hospitalId: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled: number
     notes: string | null
     urgencyLevel: $Enums.RequestUrgency
     status: $Enums.RequestStatus
@@ -5292,12 +5528,14 @@ export namespace Prisma {
     id?: boolean
     hospitalId?: boolean
     bloodType?: boolean
-    units?: boolean
+    unitsRequired?: boolean
+    unitsFulfilled?: boolean
     notes?: boolean
     urgencyLevel?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    notifications?: boolean | BloodRequest$notificationsArgs<ExtArgs>
     hospital?: boolean | HospitalDefaultArgs<ExtArgs>
     donations?: boolean | BloodRequest$donationsArgs<ExtArgs>
     responses?: boolean | BloodRequest$responsesArgs<ExtArgs>
@@ -5308,7 +5546,8 @@ export namespace Prisma {
     id?: boolean
     hospitalId?: boolean
     bloodType?: boolean
-    units?: boolean
+    unitsRequired?: boolean
+    unitsFulfilled?: boolean
     notes?: boolean
     urgencyLevel?: boolean
     status?: boolean
@@ -5321,7 +5560,8 @@ export namespace Prisma {
     id?: boolean
     hospitalId?: boolean
     bloodType?: boolean
-    units?: boolean
+    unitsRequired?: boolean
+    unitsFulfilled?: boolean
     notes?: boolean
     urgencyLevel?: boolean
     status?: boolean
@@ -5334,7 +5574,8 @@ export namespace Prisma {
     id?: boolean
     hospitalId?: boolean
     bloodType?: boolean
-    units?: boolean
+    unitsRequired?: boolean
+    unitsFulfilled?: boolean
     notes?: boolean
     urgencyLevel?: boolean
     status?: boolean
@@ -5342,8 +5583,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BloodRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hospitalId" | "bloodType" | "units" | "notes" | "urgencyLevel" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["bloodRequest"]>
+  export type BloodRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hospitalId" | "bloodType" | "unitsRequired" | "unitsFulfilled" | "notes" | "urgencyLevel" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["bloodRequest"]>
   export type BloodRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notifications?: boolean | BloodRequest$notificationsArgs<ExtArgs>
     hospital?: boolean | HospitalDefaultArgs<ExtArgs>
     donations?: boolean | BloodRequest$donationsArgs<ExtArgs>
     responses?: boolean | BloodRequest$responsesArgs<ExtArgs>
@@ -5359,6 +5601,7 @@ export namespace Prisma {
   export type $BloodRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BloodRequest"
     objects: {
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
       hospital: Prisma.$HospitalPayload<ExtArgs>
       donations: Prisma.$DonationPayload<ExtArgs>[]
       responses: Prisma.$RequestResponsePayload<ExtArgs>[]
@@ -5367,7 +5610,8 @@ export namespace Prisma {
       id: string
       hospitalId: string
       bloodType: $Enums.BloodType
-      units: number
+      unitsRequired: number
+      unitsFulfilled: number
       notes: string | null
       urgencyLevel: $Enums.RequestUrgency
       status: $Enums.RequestStatus
@@ -5767,6 +6011,7 @@ export namespace Prisma {
    */
   export interface Prisma__BloodRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    notifications<T extends BloodRequest$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, BloodRequest$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     hospital<T extends HospitalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HospitalDefaultArgs<ExtArgs>>): Prisma__HospitalClient<$Result.GetResult<Prisma.$HospitalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     donations<T extends BloodRequest$donationsArgs<ExtArgs> = {}>(args?: Subset<T, BloodRequest$donationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     responses<T extends BloodRequest$responsesArgs<ExtArgs> = {}>(args?: Subset<T, BloodRequest$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequestResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5802,7 +6047,8 @@ export namespace Prisma {
     readonly id: FieldRef<"BloodRequest", 'String'>
     readonly hospitalId: FieldRef<"BloodRequest", 'String'>
     readonly bloodType: FieldRef<"BloodRequest", 'BloodType'>
-    readonly units: FieldRef<"BloodRequest", 'Int'>
+    readonly unitsRequired: FieldRef<"BloodRequest", 'Int'>
+    readonly unitsFulfilled: FieldRef<"BloodRequest", 'Int'>
     readonly notes: FieldRef<"BloodRequest", 'String'>
     readonly urgencyLevel: FieldRef<"BloodRequest", 'RequestUrgency'>
     readonly status: FieldRef<"BloodRequest", 'RequestStatus'>
@@ -6206,6 +6452,30 @@ export namespace Prisma {
      * Limit how many BloodRequests to delete.
      */
     limit?: number
+  }
+
+  /**
+   * BloodRequest.notifications
+   */
+  export type BloodRequest$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -7408,8 +7678,10 @@ export namespace Prisma {
     donorId: string | null
     responseId: string | null
     units: number | null
+    notes: string | null
+    donationOutcome: $Enums.DonationOutcome | null
     confirmedById: string | null
-    confirmedAt: Date | null
+    outcomeRecordedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7420,8 +7692,10 @@ export namespace Prisma {
     donorId: string | null
     responseId: string | null
     units: number | null
+    notes: string | null
+    donationOutcome: $Enums.DonationOutcome | null
     confirmedById: string | null
-    confirmedAt: Date | null
+    outcomeRecordedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7432,8 +7706,10 @@ export namespace Prisma {
     donorId: number
     responseId: number
     units: number
+    notes: number
+    donationOutcome: number
     confirmedById: number
-    confirmedAt: number
+    outcomeRecordedAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7454,8 +7730,10 @@ export namespace Prisma {
     donorId?: true
     responseId?: true
     units?: true
+    notes?: true
+    donationOutcome?: true
     confirmedById?: true
-    confirmedAt?: true
+    outcomeRecordedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7466,8 +7744,10 @@ export namespace Prisma {
     donorId?: true
     responseId?: true
     units?: true
+    notes?: true
+    donationOutcome?: true
     confirmedById?: true
-    confirmedAt?: true
+    outcomeRecordedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7478,8 +7758,10 @@ export namespace Prisma {
     donorId?: true
     responseId?: true
     units?: true
+    notes?: true
+    donationOutcome?: true
     confirmedById?: true
-    confirmedAt?: true
+    outcomeRecordedAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7576,9 +7858,11 @@ export namespace Prisma {
     requestId: string
     donorId: string
     responseId: string
-    units: number
+    units: number | null
+    notes: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt: Date
+    outcomeRecordedAt: Date
     createdAt: Date
     updatedAt: Date
     _count: DonationCountAggregateOutputType | null
@@ -7608,8 +7892,10 @@ export namespace Prisma {
     donorId?: boolean
     responseId?: boolean
     units?: boolean
+    notes?: boolean
+    donationOutcome?: boolean
     confirmedById?: boolean
-    confirmedAt?: boolean
+    outcomeRecordedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     request?: boolean | BloodRequestDefaultArgs<ExtArgs>
@@ -7624,8 +7910,10 @@ export namespace Prisma {
     donorId?: boolean
     responseId?: boolean
     units?: boolean
+    notes?: boolean
+    donationOutcome?: boolean
     confirmedById?: boolean
-    confirmedAt?: boolean
+    outcomeRecordedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     request?: boolean | BloodRequestDefaultArgs<ExtArgs>
@@ -7640,8 +7928,10 @@ export namespace Prisma {
     donorId?: boolean
     responseId?: boolean
     units?: boolean
+    notes?: boolean
+    donationOutcome?: boolean
     confirmedById?: boolean
-    confirmedAt?: boolean
+    outcomeRecordedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     request?: boolean | BloodRequestDefaultArgs<ExtArgs>
@@ -7656,13 +7946,15 @@ export namespace Prisma {
     donorId?: boolean
     responseId?: boolean
     units?: boolean
+    notes?: boolean
+    donationOutcome?: boolean
     confirmedById?: boolean
-    confirmedAt?: boolean
+    outcomeRecordedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DonationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "requestId" | "donorId" | "responseId" | "units" | "confirmedById" | "confirmedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
+  export type DonationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "requestId" | "donorId" | "responseId" | "units" | "notes" | "donationOutcome" | "confirmedById" | "outcomeRecordedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
   export type DonationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     request?: boolean | BloodRequestDefaultArgs<ExtArgs>
     donor?: boolean | DonorDefaultArgs<ExtArgs>
@@ -7695,9 +7987,11 @@ export namespace Prisma {
       requestId: string
       donorId: string
       responseId: string
-      units: number
+      units: number | null
+      notes: string | null
+      donationOutcome: $Enums.DonationOutcome
       confirmedById: string
-      confirmedAt: Date
+      outcomeRecordedAt: Date
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["donation"]>
@@ -8132,8 +8426,10 @@ export namespace Prisma {
     readonly donorId: FieldRef<"Donation", 'String'>
     readonly responseId: FieldRef<"Donation", 'String'>
     readonly units: FieldRef<"Donation", 'Int'>
+    readonly notes: FieldRef<"Donation", 'String'>
+    readonly donationOutcome: FieldRef<"Donation", 'DonationOutcome'>
     readonly confirmedById: FieldRef<"Donation", 'String'>
-    readonly confirmedAt: FieldRef<"Donation", 'DateTime'>
+    readonly outcomeRecordedAt: FieldRef<"Donation", 'DateTime'>
     readonly createdAt: FieldRef<"Donation", 'DateTime'>
     readonly updatedAt: FieldRef<"Donation", 'DateTime'>
   }
@@ -8556,6 +8852,1207 @@ export namespace Prisma {
 
 
   /**
+   * Model Notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.NotificationType | null
+    title: string | null
+    message: string | null
+    isRead: boolean | null
+    donorId: string | null
+    hospitalId: string | null
+    requestId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.NotificationType | null
+    title: string | null
+    message: string | null
+    isRead: boolean | null
+    donorId: string | null
+    hospitalId: string | null
+    requestId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    type: number
+    title: number
+    message: number
+    isRead: number
+    donorId: number
+    hospitalId: number
+    requestId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    message?: true
+    isRead?: true
+    donorId?: true
+    hospitalId?: true
+    requestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    message?: true
+    isRead?: true
+    donorId?: true
+    hospitalId?: true
+    requestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    message?: true
+    isRead?: true
+    donorId?: true
+    hospitalId?: true
+    requestId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notification to aggregate.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: NotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead: boolean
+    donorId: string | null
+    hospitalId: string | null
+    requestId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    isRead?: boolean
+    donorId?: boolean
+    hospitalId?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    isRead?: boolean
+    donorId?: boolean
+    hospitalId?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    isRead?: boolean
+    donorId?: boolean
+    hospitalId?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectScalar = {
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    isRead?: boolean
+    donorId?: boolean
+    hospitalId?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "title" | "message" | "isRead" | "donorId" | "hospitalId" | "requestId" | "createdAt" | "updatedAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donor?: boolean | Notification$donorArgs<ExtArgs>
+    hospital?: boolean | Notification$hospitalArgs<ExtArgs>
+    request?: boolean | Notification$requestArgs<ExtArgs>
+  }
+
+  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Notification"
+    objects: {
+      donor: Prisma.$DonorPayload<ExtArgs> | null
+      hospital: Prisma.$HospitalPayload<ExtArgs> | null
+      request: Prisma.$BloodRequestPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.NotificationType
+      title: string
+      message: string
+      isRead: boolean
+      donorId: string | null
+      hospitalId: string | null
+      requestId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
+
+  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notifications and returns the data saved in the database.
+     * @param {NotificationCreateManyAndReturnArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification.
+     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications and returns the data updated in the database.
+     * @param {NotificationUpdateManyAndReturnArgs} args - Arguments to update many Notifications.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification.
+     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationCountArgs>(
+      args?: Subset<T, NotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Notification model
+   */
+  readonly fields: NotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    donor<T extends Notification$donorArgs<ExtArgs> = {}>(args?: Subset<T, Notification$donorArgs<ExtArgs>>): Prisma__DonorClient<$Result.GetResult<Prisma.$DonorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    hospital<T extends Notification$hospitalArgs<ExtArgs> = {}>(args?: Subset<T, Notification$hospitalArgs<ExtArgs>>): Prisma__HospitalClient<$Result.GetResult<Prisma.$HospitalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    request<T extends Notification$requestArgs<ExtArgs> = {}>(args?: Subset<T, Notification$requestArgs<ExtArgs>>): Prisma__BloodRequestClient<$Result.GetResult<Prisma.$BloodRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Notification model
+   */
+  interface NotificationFieldRefs {
+    readonly id: FieldRef<"Notification", 'String'>
+    readonly type: FieldRef<"Notification", 'NotificationType'>
+    readonly title: FieldRef<"Notification", 'String'>
+    readonly message: FieldRef<"Notification", 'String'>
+    readonly isRead: FieldRef<"Notification", 'Boolean'>
+    readonly donorId: FieldRef<"Notification", 'String'>
+    readonly hospitalId: FieldRef<"Notification", 'String'>
+    readonly requestId: FieldRef<"Notification", 'String'>
+    readonly createdAt: FieldRef<"Notification", 'DateTime'>
+    readonly updatedAt: FieldRef<"Notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Notification findUnique
+   */
+  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findUniqueOrThrow
+   */
+  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findFirst
+   */
+  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findFirstOrThrow
+   */
+  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findMany
+   */
+  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notifications to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification create
+   */
+  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Notification.
+     */
+    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+  }
+
+  /**
+   * Notification createMany
+   */
+  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Notification createManyAndReturn
+   */
+  export type NotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification update
+   */
+  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Notification.
+     */
+    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+    /**
+     * Choose, which Notification to update.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification updateMany
+   */
+  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification updateManyAndReturn
+   */
+  export type NotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification upsert
+   */
+  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Notification to update in case it exists.
+     */
+    where: NotificationWhereUniqueInput
+    /**
+     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
+     */
+    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+    /**
+     * In case the Notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * Notification delete
+   */
+  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter which Notification to delete.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification deleteMany
+   */
+  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notifications to delete
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification.donor
+   */
+  export type Notification$donorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donor
+     */
+    select?: DonorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donor
+     */
+    omit?: DonorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonorInclude<ExtArgs> | null
+    where?: DonorWhereInput
+  }
+
+  /**
+   * Notification.hospital
+   */
+  export type Notification$hospitalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Hospital
+     */
+    select?: HospitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Hospital
+     */
+    omit?: HospitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HospitalInclude<ExtArgs> | null
+    where?: HospitalWhereInput
+  }
+
+  /**
+   * Notification.request
+   */
+  export type Notification$requestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BloodRequest
+     */
+    select?: BloodRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BloodRequest
+     */
+    omit?: BloodRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BloodRequestInclude<ExtArgs> | null
+    where?: BloodRequestWhereInput
+  }
+
+  /**
+   * Notification without action
+   */
+  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -8587,6 +10084,7 @@ export namespace Prisma {
     fullName: 'fullName',
     bloodType: 'bloodType',
     dateOfBirth: 'dateOfBirth',
+    gender: 'gender',
     phoneNumber: 'phoneNumber',
     address: 'address',
     state: 'state',
@@ -8621,7 +10119,8 @@ export namespace Prisma {
     id: 'id',
     hospitalId: 'hospitalId',
     bloodType: 'bloodType',
-    units: 'units',
+    unitsRequired: 'unitsRequired',
+    unitsFulfilled: 'unitsFulfilled',
     notes: 'notes',
     urgencyLevel: 'urgencyLevel',
     status: 'status',
@@ -8650,13 +10149,31 @@ export namespace Prisma {
     donorId: 'donorId',
     responseId: 'responseId',
     units: 'units',
+    notes: 'notes',
+    donationOutcome: 'donationOutcome',
     confirmedById: 'confirmedById',
-    confirmedAt: 'confirmedAt',
+    outcomeRecordedAt: 'outcomeRecordedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type DonationScalarFieldEnum = (typeof DonationScalarFieldEnum)[keyof typeof DonationScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    title: 'title',
+    message: 'message',
+    isRead: 'isRead',
+    donorId: 'donorId',
+    hospitalId: 'hospitalId',
+    requestId: 'requestId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -8745,6 +10262,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Gender'
+   */
+  export type EnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender'>
+    
+
+
+  /**
+   * Reference to a field of type 'Gender[]'
+   */
+  export type ListEnumGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Gender[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -8804,6 +10335,34 @@ export namespace Prisma {
    * Reference to a field of type 'ResponseStatus[]'
    */
   export type ListEnumResponseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResponseStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DonationOutcome'
+   */
+  export type EnumDonationOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationOutcome'>
+    
+
+
+  /**
+   * Reference to a field of type 'DonationOutcome[]'
+   */
+  export type ListEnumDonationOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonationOutcome[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType'
+   */
+  export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType[]'
+   */
+  export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
     
 
 
@@ -8899,12 +10458,14 @@ export namespace Prisma {
     fullName?: StringFilter<"Donor"> | string
     bloodType?: EnumBloodTypeFilter<"Donor"> | $Enums.BloodType
     dateOfBirth?: DateTimeFilter<"Donor"> | Date | string
+    gender?: EnumGenderFilter<"Donor"> | $Enums.Gender
     phoneNumber?: StringFilter<"Donor"> | string
     address?: StringFilter<"Donor"> | string
     state?: StringFilter<"Donor"> | string
     isAvailable?: BoolFilter<"Donor"> | boolean
     createdAt?: DateTimeFilter<"Donor"> | Date | string
     updatedAt?: DateTimeFilter<"Donor"> | Date | string
+    notifications?: NotificationListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     donations?: DonationListRelationFilter
     responses?: RequestResponseListRelationFilter
@@ -8916,12 +10477,14 @@ export namespace Prisma {
     fullName?: SortOrder
     bloodType?: SortOrder
     dateOfBirth?: SortOrder
+    gender?: SortOrder
     phoneNumber?: SortOrder
     address?: SortOrder
     state?: SortOrder
     isAvailable?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    notifications?: NotificationOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     donations?: DonationOrderByRelationAggregateInput
     responses?: RequestResponseOrderByRelationAggregateInput
@@ -8936,12 +10499,14 @@ export namespace Prisma {
     fullName?: StringFilter<"Donor"> | string
     bloodType?: EnumBloodTypeFilter<"Donor"> | $Enums.BloodType
     dateOfBirth?: DateTimeFilter<"Donor"> | Date | string
+    gender?: EnumGenderFilter<"Donor"> | $Enums.Gender
     phoneNumber?: StringFilter<"Donor"> | string
     address?: StringFilter<"Donor"> | string
     state?: StringFilter<"Donor"> | string
     isAvailable?: BoolFilter<"Donor"> | boolean
     createdAt?: DateTimeFilter<"Donor"> | Date | string
     updatedAt?: DateTimeFilter<"Donor"> | Date | string
+    notifications?: NotificationListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     donations?: DonationListRelationFilter
     responses?: RequestResponseListRelationFilter
@@ -8953,6 +10518,7 @@ export namespace Prisma {
     fullName?: SortOrder
     bloodType?: SortOrder
     dateOfBirth?: SortOrder
+    gender?: SortOrder
     phoneNumber?: SortOrder
     address?: SortOrder
     state?: SortOrder
@@ -8973,6 +10539,7 @@ export namespace Prisma {
     fullName?: StringWithAggregatesFilter<"Donor"> | string
     bloodType?: EnumBloodTypeWithAggregatesFilter<"Donor"> | $Enums.BloodType
     dateOfBirth?: DateTimeWithAggregatesFilter<"Donor"> | Date | string
+    gender?: EnumGenderWithAggregatesFilter<"Donor"> | $Enums.Gender
     phoneNumber?: StringWithAggregatesFilter<"Donor"> | string
     address?: StringWithAggregatesFilter<"Donor"> | string
     state?: StringWithAggregatesFilter<"Donor"> | string
@@ -8998,6 +10565,7 @@ export namespace Prisma {
     contactRole?: StringFilter<"Hospital"> | string
     createdAt?: DateTimeFilter<"Hospital"> | Date | string
     updatedAt?: DateTimeFilter<"Hospital"> | Date | string
+    notifications?: NotificationListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     requests?: BloodRequestListRelationFilter
   }
@@ -9016,6 +10584,7 @@ export namespace Prisma {
     contactRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    notifications?: NotificationOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     requests?: BloodRequestOrderByRelationAggregateInput
   }
@@ -9037,6 +10606,7 @@ export namespace Prisma {
     contactRole?: StringFilter<"Hospital"> | string
     createdAt?: DateTimeFilter<"Hospital"> | Date | string
     updatedAt?: DateTimeFilter<"Hospital"> | Date | string
+    notifications?: NotificationListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     requests?: BloodRequestListRelationFilter
   }, "id" | "userId" | "licenseId">
@@ -9086,12 +10656,14 @@ export namespace Prisma {
     id?: StringFilter<"BloodRequest"> | string
     hospitalId?: StringFilter<"BloodRequest"> | string
     bloodType?: EnumBloodTypeFilter<"BloodRequest"> | $Enums.BloodType
-    units?: IntFilter<"BloodRequest"> | number
+    unitsRequired?: IntFilter<"BloodRequest"> | number
+    unitsFulfilled?: IntFilter<"BloodRequest"> | number
     notes?: StringNullableFilter<"BloodRequest"> | string | null
     urgencyLevel?: EnumRequestUrgencyFilter<"BloodRequest"> | $Enums.RequestUrgency
     status?: EnumRequestStatusFilter<"BloodRequest"> | $Enums.RequestStatus
     createdAt?: DateTimeFilter<"BloodRequest"> | Date | string
     updatedAt?: DateTimeFilter<"BloodRequest"> | Date | string
+    notifications?: NotificationListRelationFilter
     hospital?: XOR<HospitalScalarRelationFilter, HospitalWhereInput>
     donations?: DonationListRelationFilter
     responses?: RequestResponseListRelationFilter
@@ -9101,12 +10673,14 @@ export namespace Prisma {
     id?: SortOrder
     hospitalId?: SortOrder
     bloodType?: SortOrder
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
     notes?: SortOrderInput | SortOrder
     urgencyLevel?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    notifications?: NotificationOrderByRelationAggregateInput
     hospital?: HospitalOrderByWithRelationInput
     donations?: DonationOrderByRelationAggregateInput
     responses?: RequestResponseOrderByRelationAggregateInput
@@ -9119,12 +10693,14 @@ export namespace Prisma {
     NOT?: BloodRequestWhereInput | BloodRequestWhereInput[]
     hospitalId?: StringFilter<"BloodRequest"> | string
     bloodType?: EnumBloodTypeFilter<"BloodRequest"> | $Enums.BloodType
-    units?: IntFilter<"BloodRequest"> | number
+    unitsRequired?: IntFilter<"BloodRequest"> | number
+    unitsFulfilled?: IntFilter<"BloodRequest"> | number
     notes?: StringNullableFilter<"BloodRequest"> | string | null
     urgencyLevel?: EnumRequestUrgencyFilter<"BloodRequest"> | $Enums.RequestUrgency
     status?: EnumRequestStatusFilter<"BloodRequest"> | $Enums.RequestStatus
     createdAt?: DateTimeFilter<"BloodRequest"> | Date | string
     updatedAt?: DateTimeFilter<"BloodRequest"> | Date | string
+    notifications?: NotificationListRelationFilter
     hospital?: XOR<HospitalScalarRelationFilter, HospitalWhereInput>
     donations?: DonationListRelationFilter
     responses?: RequestResponseListRelationFilter
@@ -9134,7 +10710,8 @@ export namespace Prisma {
     id?: SortOrder
     hospitalId?: SortOrder
     bloodType?: SortOrder
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
     notes?: SortOrderInput | SortOrder
     urgencyLevel?: SortOrder
     status?: SortOrder
@@ -9154,7 +10731,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"BloodRequest"> | string
     hospitalId?: StringWithAggregatesFilter<"BloodRequest"> | string
     bloodType?: EnumBloodTypeWithAggregatesFilter<"BloodRequest"> | $Enums.BloodType
-    units?: IntWithAggregatesFilter<"BloodRequest"> | number
+    unitsRequired?: IntWithAggregatesFilter<"BloodRequest"> | number
+    unitsFulfilled?: IntWithAggregatesFilter<"BloodRequest"> | number
     notes?: StringNullableWithAggregatesFilter<"BloodRequest"> | string | null
     urgencyLevel?: EnumRequestUrgencyWithAggregatesFilter<"BloodRequest"> | $Enums.RequestUrgency
     status?: EnumRequestStatusWithAggregatesFilter<"BloodRequest"> | $Enums.RequestStatus
@@ -9237,9 +10815,11 @@ export namespace Prisma {
     requestId?: StringFilter<"Donation"> | string
     donorId?: StringFilter<"Donation"> | string
     responseId?: StringFilter<"Donation"> | string
-    units?: IntFilter<"Donation"> | number
+    units?: IntNullableFilter<"Donation"> | number | null
+    notes?: StringNullableFilter<"Donation"> | string | null
+    donationOutcome?: EnumDonationOutcomeFilter<"Donation"> | $Enums.DonationOutcome
     confirmedById?: StringFilter<"Donation"> | string
-    confirmedAt?: DateTimeFilter<"Donation"> | Date | string
+    outcomeRecordedAt?: DateTimeFilter<"Donation"> | Date | string
     createdAt?: DateTimeFilter<"Donation"> | Date | string
     updatedAt?: DateTimeFilter<"Donation"> | Date | string
     request?: XOR<BloodRequestScalarRelationFilter, BloodRequestWhereInput>
@@ -9253,9 +10833,11 @@ export namespace Prisma {
     requestId?: SortOrder
     donorId?: SortOrder
     responseId?: SortOrder
-    units?: SortOrder
+    units?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    donationOutcome?: SortOrder
     confirmedById?: SortOrder
-    confirmedAt?: SortOrder
+    outcomeRecordedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     request?: BloodRequestOrderByWithRelationInput
@@ -9272,9 +10854,11 @@ export namespace Prisma {
     NOT?: DonationWhereInput | DonationWhereInput[]
     requestId?: StringFilter<"Donation"> | string
     donorId?: StringFilter<"Donation"> | string
-    units?: IntFilter<"Donation"> | number
+    units?: IntNullableFilter<"Donation"> | number | null
+    notes?: StringNullableFilter<"Donation"> | string | null
+    donationOutcome?: EnumDonationOutcomeFilter<"Donation"> | $Enums.DonationOutcome
     confirmedById?: StringFilter<"Donation"> | string
-    confirmedAt?: DateTimeFilter<"Donation"> | Date | string
+    outcomeRecordedAt?: DateTimeFilter<"Donation"> | Date | string
     createdAt?: DateTimeFilter<"Donation"> | Date | string
     updatedAt?: DateTimeFilter<"Donation"> | Date | string
     request?: XOR<BloodRequestScalarRelationFilter, BloodRequestWhereInput>
@@ -9288,9 +10872,11 @@ export namespace Prisma {
     requestId?: SortOrder
     donorId?: SortOrder
     responseId?: SortOrder
-    units?: SortOrder
+    units?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    donationOutcome?: SortOrder
     confirmedById?: SortOrder
-    confirmedAt?: SortOrder
+    outcomeRecordedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DonationCountOrderByAggregateInput
@@ -9308,11 +10894,99 @@ export namespace Prisma {
     requestId?: StringWithAggregatesFilter<"Donation"> | string
     donorId?: StringWithAggregatesFilter<"Donation"> | string
     responseId?: StringWithAggregatesFilter<"Donation"> | string
-    units?: IntWithAggregatesFilter<"Donation"> | number
+    units?: IntNullableWithAggregatesFilter<"Donation"> | number | null
+    notes?: StringNullableWithAggregatesFilter<"Donation"> | string | null
+    donationOutcome?: EnumDonationOutcomeWithAggregatesFilter<"Donation"> | $Enums.DonationOutcome
     confirmedById?: StringWithAggregatesFilter<"Donation"> | string
-    confirmedAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
+    outcomeRecordedAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Donation"> | Date | string
+  }
+
+  export type NotificationWhereInput = {
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    donorId?: StringNullableFilter<"Notification"> | string | null
+    hospitalId?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    donor?: XOR<DonorNullableScalarRelationFilter, DonorWhereInput> | null
+    hospital?: XOR<HospitalNullableScalarRelationFilter, HospitalWhereInput> | null
+    request?: XOR<BloodRequestNullableScalarRelationFilter, BloodRequestWhereInput> | null
+  }
+
+  export type NotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    isRead?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    hospitalId?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    donor?: DonorOrderByWithRelationInput
+    hospital?: HospitalOrderByWithRelationInput
+    request?: BloodRequestOrderByWithRelationInput
+  }
+
+  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    donorId?: StringNullableFilter<"Notification"> | string | null
+    hospitalId?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeFilter<"Notification"> | Date | string
+    donor?: XOR<DonorNullableScalarRelationFilter, DonorWhereInput> | null
+    hospital?: XOR<HospitalNullableScalarRelationFilter, HospitalWhereInput> | null
+    request?: XOR<BloodRequestNullableScalarRelationFilter, BloodRequestWhereInput> | null
+  }, "id">
+
+  export type NotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    isRead?: SortOrder
+    donorId?: SortOrderInput | SortOrder
+    hospitalId?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: NotificationCountOrderByAggregateInput
+    _max?: NotificationMaxOrderByAggregateInput
+    _min?: NotificationMinOrderByAggregateInput
+  }
+
+  export type NotificationScalarWhereWithAggregatesInput = {
+    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    OR?: NotificationScalarWhereWithAggregatesInput[]
+    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Notification"> | string
+    type?: EnumNotificationTypeWithAggregatesFilter<"Notification"> | $Enums.NotificationType
+    title?: StringWithAggregatesFilter<"Notification"> | string
+    message?: StringWithAggregatesFilter<"Notification"> | string
+    isRead?: BoolWithAggregatesFilter<"Notification"> | boolean
+    donorId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    hospitalId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    requestId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -9395,12 +11069,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutDonorInput
     user: UserCreateNestedOneWithoutDonorInput
     donations?: DonationCreateNestedManyWithoutDonorInput
     responses?: RequestResponseCreateNestedManyWithoutDonorInput
@@ -9412,12 +11088,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDonorInput
     donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutDonorInput
   }
@@ -9427,12 +11105,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutDonorNestedInput
     user?: UserUpdateOneRequiredWithoutDonorNestedInput
     donations?: DonationUpdateManyWithoutDonorNestedInput
     responses?: RequestResponseUpdateManyWithoutDonorNestedInput
@@ -9444,12 +11124,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutDonorNestedInput
     donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutDonorNestedInput
   }
@@ -9460,6 +11142,7 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
@@ -9473,6 +11156,7 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
@@ -9487,6 +11171,7 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
@@ -9508,6 +11193,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutHospitalInput
     user: UserCreateNestedOneWithoutHospitalInput
     requests?: BloodRequestCreateNestedManyWithoutHospitalInput
   }
@@ -9526,6 +11212,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutHospitalInput
     requests?: BloodRequestUncheckedCreateNestedManyWithoutHospitalInput
   }
 
@@ -9542,6 +11229,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutHospitalNestedInput
     user?: UserUpdateOneRequiredWithoutHospitalNestedInput
     requests?: BloodRequestUpdateManyWithoutHospitalNestedInput
   }
@@ -9560,6 +11248,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutHospitalNestedInput
     requests?: BloodRequestUncheckedUpdateManyWithoutHospitalNestedInput
   }
 
@@ -9613,12 +11302,14 @@ export namespace Prisma {
   export type BloodRequestCreateInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutRequestInput
     hospital: HospitalCreateNestedOneWithoutRequestsInput
     donations?: DonationCreateNestedManyWithoutRequestInput
     responses?: RequestResponseCreateNestedManyWithoutRequestInput
@@ -9628,12 +11319,14 @@ export namespace Prisma {
     id?: string
     hospitalId: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRequestInput
     donations?: DonationUncheckedCreateNestedManyWithoutRequestInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutRequestInput
   }
@@ -9641,12 +11334,14 @@ export namespace Prisma {
   export type BloodRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutRequestNestedInput
     hospital?: HospitalUpdateOneRequiredWithoutRequestsNestedInput
     donations?: DonationUpdateManyWithoutRequestNestedInput
     responses?: RequestResponseUpdateManyWithoutRequestNestedInput
@@ -9656,12 +11351,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     hospitalId?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutRequestNestedInput
     donations?: DonationUncheckedUpdateManyWithoutRequestNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutRequestNestedInput
   }
@@ -9670,7 +11367,8 @@ export namespace Prisma {
     id?: string
     hospitalId: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
@@ -9681,7 +11379,8 @@ export namespace Prisma {
   export type BloodRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -9693,7 +11392,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     hospitalId?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -9768,8 +11468,10 @@ export namespace Prisma {
 
   export type DonationCreateInput = {
     id?: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     request: BloodRequestCreateNestedOneWithoutDonationsInput
@@ -9783,17 +11485,21 @@ export namespace Prisma {
     requestId: string
     donorId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DonationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     request?: BloodRequestUpdateOneRequiredWithoutDonationsNestedInput
@@ -9807,9 +11513,11 @@ export namespace Prisma {
     requestId?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9819,17 +11527,21 @@ export namespace Prisma {
     requestId: string
     donorId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DonationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9839,9 +11551,99 @@ export namespace Prisma {
     requestId?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donor?: DonorCreateNestedOneWithoutNotificationsInput
+    hospital?: HospitalCreateNestedOneWithoutNotificationsInput
+    request?: BloodRequestCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    hospitalId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donor?: DonorUpdateOneWithoutNotificationsNestedInput
+    hospital?: HospitalUpdateOneWithoutNotificationsNestedInput
+    request?: BloodRequestUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    hospitalId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9975,9 +11777,22 @@ export namespace Prisma {
     not?: NestedEnumBloodTypeFilter<$PrismaModel> | $Enums.BloodType
   }
 
+  export type EnumGenderFilter<$PrismaModel = never> = {
+    equals?: $Enums.Gender | EnumGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderFilter<$PrismaModel> | $Enums.Gender
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
   }
 
   export type UserScalarRelationFilter = {
@@ -9991,6 +11806,10 @@ export namespace Prisma {
     none?: RequestResponseWhereInput
   }
 
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type RequestResponseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -10001,6 +11820,7 @@ export namespace Prisma {
     fullName?: SortOrder
     bloodType?: SortOrder
     dateOfBirth?: SortOrder
+    gender?: SortOrder
     phoneNumber?: SortOrder
     address?: SortOrder
     state?: SortOrder
@@ -10015,6 +11835,7 @@ export namespace Prisma {
     fullName?: SortOrder
     bloodType?: SortOrder
     dateOfBirth?: SortOrder
+    gender?: SortOrder
     phoneNumber?: SortOrder
     address?: SortOrder
     state?: SortOrder
@@ -10029,6 +11850,7 @@ export namespace Prisma {
     fullName?: SortOrder
     bloodType?: SortOrder
     dateOfBirth?: SortOrder
+    gender?: SortOrder
     phoneNumber?: SortOrder
     address?: SortOrder
     state?: SortOrder
@@ -10045,6 +11867,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBloodTypeFilter<$PrismaModel>
     _max?: NestedEnumBloodTypeFilter<$PrismaModel>
+  }
+
+  export type EnumGenderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Gender | EnumGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderWithAggregatesFilter<$PrismaModel> | $Enums.Gender
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenderFilter<$PrismaModel>
+    _max?: NestedEnumGenderFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -10185,7 +12017,8 @@ export namespace Prisma {
     id?: SortOrder
     hospitalId?: SortOrder
     bloodType?: SortOrder
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
     notes?: SortOrder
     urgencyLevel?: SortOrder
     status?: SortOrder
@@ -10194,14 +12027,16 @@ export namespace Prisma {
   }
 
   export type BloodRequestAvgOrderByAggregateInput = {
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
   }
 
   export type BloodRequestMaxOrderByAggregateInput = {
     id?: SortOrder
     hospitalId?: SortOrder
     bloodType?: SortOrder
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
     notes?: SortOrder
     urgencyLevel?: SortOrder
     status?: SortOrder
@@ -10213,7 +12048,8 @@ export namespace Prisma {
     id?: SortOrder
     hospitalId?: SortOrder
     bloodType?: SortOrder
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
     notes?: SortOrder
     urgencyLevel?: SortOrder
     status?: SortOrder
@@ -10222,7 +12058,8 @@ export namespace Prisma {
   }
 
   export type BloodRequestSumOrderByAggregateInput = {
-    units?: SortOrder
+    unitsRequired?: SortOrder
+    unitsFulfilled?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -10325,6 +12162,24 @@ export namespace Prisma {
     _max?: NestedEnumResponseStatusFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type EnumDonationOutcomeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationOutcome | EnumDonationOutcomeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationOutcomeFilter<$PrismaModel> | $Enums.DonationOutcome
+  }
+
   export type RequestResponseScalarRelationFilter = {
     is?: RequestResponseWhereInput
     isNot?: RequestResponseWhereInput
@@ -10336,8 +12191,10 @@ export namespace Prisma {
     donorId?: SortOrder
     responseId?: SortOrder
     units?: SortOrder
+    notes?: SortOrder
+    donationOutcome?: SortOrder
     confirmedById?: SortOrder
-    confirmedAt?: SortOrder
+    outcomeRecordedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10352,8 +12209,10 @@ export namespace Prisma {
     donorId?: SortOrder
     responseId?: SortOrder
     units?: SortOrder
+    notes?: SortOrder
+    donationOutcome?: SortOrder
     confirmedById?: SortOrder
-    confirmedAt?: SortOrder
+    outcomeRecordedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10364,14 +12223,103 @@ export namespace Prisma {
     donorId?: SortOrder
     responseId?: SortOrder
     units?: SortOrder
+    notes?: SortOrder
+    donationOutcome?: SortOrder
     confirmedById?: SortOrder
-    confirmedAt?: SortOrder
+    outcomeRecordedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type DonationSumOrderByAggregateInput = {
     units?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumDonationOutcomeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationOutcome | EnumDonationOutcomeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationOutcomeWithAggregatesFilter<$PrismaModel> | $Enums.DonationOutcome
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationOutcomeFilter<$PrismaModel>
+    _max?: NestedEnumDonationOutcomeFilter<$PrismaModel>
+  }
+
+  export type EnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type BloodRequestNullableScalarRelationFilter = {
+    is?: BloodRequestWhereInput | null
+    isNot?: BloodRequestWhereInput | null
+  }
+
+  export type NotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    isRead?: SortOrder
+    donorId?: SortOrder
+    hospitalId?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    isRead?: SortOrder
+    donorId?: SortOrder
+    hospitalId?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    isRead?: SortOrder
+    donorId?: SortOrder
+    hospitalId?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
   export type DonorCreateNestedOneWithoutUserInput = {
@@ -10492,6 +12440,13 @@ export namespace Prisma {
     deleteMany?: DonationScalarWhereInput | DonationScalarWhereInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutDonorInput = {
+    create?: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput> | NotificationCreateWithoutDonorInput[] | NotificationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDonorInput | NotificationCreateOrConnectWithoutDonorInput[]
+    createMany?: NotificationCreateManyDonorInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutDonorInput = {
     create?: XOR<UserCreateWithoutDonorInput, UserUncheckedCreateWithoutDonorInput>
     connectOrCreate?: UserCreateOrConnectWithoutDonorInput
@@ -10512,6 +12467,13 @@ export namespace Prisma {
     connect?: RequestResponseWhereUniqueInput | RequestResponseWhereUniqueInput[]
   }
 
+  export type NotificationUncheckedCreateNestedManyWithoutDonorInput = {
+    create?: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput> | NotificationCreateWithoutDonorInput[] | NotificationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDonorInput | NotificationCreateOrConnectWithoutDonorInput[]
+    createMany?: NotificationCreateManyDonorInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type DonationUncheckedCreateNestedManyWithoutDonorInput = {
     create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
     connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
@@ -10530,8 +12492,26 @@ export namespace Prisma {
     set?: $Enums.BloodType
   }
 
+  export type EnumGenderFieldUpdateOperationsInput = {
+    set?: $Enums.Gender
+  }
+
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NotificationUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput> | NotificationCreateWithoutDonorInput[] | NotificationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDonorInput | NotificationCreateOrConnectWithoutDonorInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutDonorInput | NotificationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: NotificationCreateManyDonorInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutDonorInput | NotificationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutDonorInput | NotificationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutDonorNestedInput = {
@@ -10570,6 +12550,20 @@ export namespace Prisma {
     deleteMany?: RequestResponseScalarWhereInput | RequestResponseScalarWhereInput[]
   }
 
+  export type NotificationUncheckedUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput> | NotificationCreateWithoutDonorInput[] | NotificationUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutDonorInput | NotificationCreateOrConnectWithoutDonorInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutDonorInput | NotificationUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: NotificationCreateManyDonorInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutDonorInput | NotificationUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutDonorInput | NotificationUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type DonationUncheckedUpdateManyWithoutDonorNestedInput = {
     create?: XOR<DonationCreateWithoutDonorInput, DonationUncheckedCreateWithoutDonorInput> | DonationCreateWithoutDonorInput[] | DonationUncheckedCreateWithoutDonorInput[]
     connectOrCreate?: DonationCreateOrConnectWithoutDonorInput | DonationCreateOrConnectWithoutDonorInput[]
@@ -10598,6 +12592,13 @@ export namespace Prisma {
     deleteMany?: RequestResponseScalarWhereInput | RequestResponseScalarWhereInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutHospitalInput = {
+    create?: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput> | NotificationCreateWithoutHospitalInput[] | NotificationUncheckedCreateWithoutHospitalInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutHospitalInput | NotificationCreateOrConnectWithoutHospitalInput[]
+    createMany?: NotificationCreateManyHospitalInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutHospitalInput = {
     create?: XOR<UserCreateWithoutHospitalInput, UserUncheckedCreateWithoutHospitalInput>
     connectOrCreate?: UserCreateOrConnectWithoutHospitalInput
@@ -10611,6 +12612,13 @@ export namespace Prisma {
     connect?: BloodRequestWhereUniqueInput | BloodRequestWhereUniqueInput[]
   }
 
+  export type NotificationUncheckedCreateNestedManyWithoutHospitalInput = {
+    create?: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput> | NotificationCreateWithoutHospitalInput[] | NotificationUncheckedCreateWithoutHospitalInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutHospitalInput | NotificationCreateOrConnectWithoutHospitalInput[]
+    createMany?: NotificationCreateManyHospitalInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type BloodRequestUncheckedCreateNestedManyWithoutHospitalInput = {
     create?: XOR<BloodRequestCreateWithoutHospitalInput, BloodRequestUncheckedCreateWithoutHospitalInput> | BloodRequestCreateWithoutHospitalInput[] | BloodRequestUncheckedCreateWithoutHospitalInput[]
     connectOrCreate?: BloodRequestCreateOrConnectWithoutHospitalInput | BloodRequestCreateOrConnectWithoutHospitalInput[]
@@ -10620,6 +12628,20 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NotificationUpdateManyWithoutHospitalNestedInput = {
+    create?: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput> | NotificationCreateWithoutHospitalInput[] | NotificationUncheckedCreateWithoutHospitalInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutHospitalInput | NotificationCreateOrConnectWithoutHospitalInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutHospitalInput | NotificationUpsertWithWhereUniqueWithoutHospitalInput[]
+    createMany?: NotificationCreateManyHospitalInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutHospitalInput | NotificationUpdateWithWhereUniqueWithoutHospitalInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutHospitalInput | NotificationUpdateManyWithWhereWithoutHospitalInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserUpdateOneRequiredWithoutHospitalNestedInput = {
@@ -10644,6 +12666,20 @@ export namespace Prisma {
     deleteMany?: BloodRequestScalarWhereInput | BloodRequestScalarWhereInput[]
   }
 
+  export type NotificationUncheckedUpdateManyWithoutHospitalNestedInput = {
+    create?: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput> | NotificationCreateWithoutHospitalInput[] | NotificationUncheckedCreateWithoutHospitalInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutHospitalInput | NotificationCreateOrConnectWithoutHospitalInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutHospitalInput | NotificationUpsertWithWhereUniqueWithoutHospitalInput[]
+    createMany?: NotificationCreateManyHospitalInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutHospitalInput | NotificationUpdateWithWhereUniqueWithoutHospitalInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutHospitalInput | NotificationUpdateManyWithWhereWithoutHospitalInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type BloodRequestUncheckedUpdateManyWithoutHospitalNestedInput = {
     create?: XOR<BloodRequestCreateWithoutHospitalInput, BloodRequestUncheckedCreateWithoutHospitalInput> | BloodRequestCreateWithoutHospitalInput[] | BloodRequestUncheckedCreateWithoutHospitalInput[]
     connectOrCreate?: BloodRequestCreateOrConnectWithoutHospitalInput | BloodRequestCreateOrConnectWithoutHospitalInput[]
@@ -10656,6 +12692,13 @@ export namespace Prisma {
     update?: BloodRequestUpdateWithWhereUniqueWithoutHospitalInput | BloodRequestUpdateWithWhereUniqueWithoutHospitalInput[]
     updateMany?: BloodRequestUpdateManyWithWhereWithoutHospitalInput | BloodRequestUpdateManyWithWhereWithoutHospitalInput[]
     deleteMany?: BloodRequestScalarWhereInput | BloodRequestScalarWhereInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutRequestInput = {
+    create?: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput> | NotificationCreateWithoutRequestInput[] | NotificationUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutRequestInput | NotificationCreateOrConnectWithoutRequestInput[]
+    createMany?: NotificationCreateManyRequestInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type HospitalCreateNestedOneWithoutRequestsInput = {
@@ -10676,6 +12719,13 @@ export namespace Prisma {
     connectOrCreate?: RequestResponseCreateOrConnectWithoutRequestInput | RequestResponseCreateOrConnectWithoutRequestInput[]
     createMany?: RequestResponseCreateManyRequestInputEnvelope
     connect?: RequestResponseWhereUniqueInput | RequestResponseWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutRequestInput = {
+    create?: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput> | NotificationCreateWithoutRequestInput[] | NotificationUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutRequestInput | NotificationCreateOrConnectWithoutRequestInput[]
+    createMany?: NotificationCreateManyRequestInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type DonationUncheckedCreateNestedManyWithoutRequestInput = {
@@ -10706,6 +12756,20 @@ export namespace Prisma {
 
   export type EnumRequestStatusFieldUpdateOperationsInput = {
     set?: $Enums.RequestStatus
+  }
+
+  export type NotificationUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput> | NotificationCreateWithoutRequestInput[] | NotificationUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutRequestInput | NotificationCreateOrConnectWithoutRequestInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutRequestInput | NotificationUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: NotificationCreateManyRequestInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutRequestInput | NotificationUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutRequestInput | NotificationUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type HospitalUpdateOneRequiredWithoutRequestsNestedInput = {
@@ -10742,6 +12806,20 @@ export namespace Prisma {
     update?: RequestResponseUpdateWithWhereUniqueWithoutRequestInput | RequestResponseUpdateWithWhereUniqueWithoutRequestInput[]
     updateMany?: RequestResponseUpdateManyWithWhereWithoutRequestInput | RequestResponseUpdateManyWithWhereWithoutRequestInput[]
     deleteMany?: RequestResponseScalarWhereInput | RequestResponseScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutRequestNestedInput = {
+    create?: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput> | NotificationCreateWithoutRequestInput[] | NotificationUncheckedCreateWithoutRequestInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutRequestInput | NotificationCreateOrConnectWithoutRequestInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutRequestInput | NotificationUpsertWithWhereUniqueWithoutRequestInput[]
+    createMany?: NotificationCreateManyRequestInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutRequestInput | NotificationUpdateWithWhereUniqueWithoutRequestInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutRequestInput | NotificationUpdateManyWithWhereWithoutRequestInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type DonationUncheckedUpdateManyWithoutRequestNestedInput = {
@@ -10860,6 +12938,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumDonationOutcomeFieldUpdateOperationsInput = {
+    set?: $Enums.DonationOutcome
+  }
+
   export type BloodRequestUpdateOneRequiredWithoutDonationsNestedInput = {
     create?: XOR<BloodRequestCreateWithoutDonationsInput, BloodRequestUncheckedCreateWithoutDonationsInput>
     connectOrCreate?: BloodRequestCreateOrConnectWithoutDonationsInput
@@ -10890,6 +12980,58 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutDonationsConfirmedInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDonationsConfirmedInput, UserUpdateWithoutDonationsConfirmedInput>, UserUncheckedUpdateWithoutDonationsConfirmedInput>
+  }
+
+  export type DonorCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<DonorCreateWithoutNotificationsInput, DonorUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: DonorCreateOrConnectWithoutNotificationsInput
+    connect?: DonorWhereUniqueInput
+  }
+
+  export type HospitalCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<HospitalCreateWithoutNotificationsInput, HospitalUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: HospitalCreateOrConnectWithoutNotificationsInput
+    connect?: HospitalWhereUniqueInput
+  }
+
+  export type BloodRequestCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<BloodRequestCreateWithoutNotificationsInput, BloodRequestUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: BloodRequestCreateOrConnectWithoutNotificationsInput
+    connect?: BloodRequestWhereUniqueInput
+  }
+
+  export type EnumNotificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationType
+  }
+
+  export type DonorUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<DonorCreateWithoutNotificationsInput, DonorUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: DonorCreateOrConnectWithoutNotificationsInput
+    upsert?: DonorUpsertWithoutNotificationsInput
+    disconnect?: DonorWhereInput | boolean
+    delete?: DonorWhereInput | boolean
+    connect?: DonorWhereUniqueInput
+    update?: XOR<XOR<DonorUpdateToOneWithWhereWithoutNotificationsInput, DonorUpdateWithoutNotificationsInput>, DonorUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type HospitalUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<HospitalCreateWithoutNotificationsInput, HospitalUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: HospitalCreateOrConnectWithoutNotificationsInput
+    upsert?: HospitalUpsertWithoutNotificationsInput
+    disconnect?: HospitalWhereInput | boolean
+    delete?: HospitalWhereInput | boolean
+    connect?: HospitalWhereUniqueInput
+    update?: XOR<XOR<HospitalUpdateToOneWithWhereWithoutNotificationsInput, HospitalUpdateWithoutNotificationsInput>, HospitalUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type BloodRequestUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<BloodRequestCreateWithoutNotificationsInput, BloodRequestUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: BloodRequestCreateOrConnectWithoutNotificationsInput
+    upsert?: BloodRequestUpsertWithoutNotificationsInput
+    disconnect?: BloodRequestWhereInput | boolean
+    delete?: BloodRequestWhereInput | boolean
+    connect?: BloodRequestWhereUniqueInput
+    update?: XOR<XOR<BloodRequestUpdateToOneWithWhereWithoutNotificationsInput, BloodRequestUpdateWithoutNotificationsInput>, BloodRequestUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -10983,6 +13125,13 @@ export namespace Prisma {
     not?: NestedEnumBloodTypeFilter<$PrismaModel> | $Enums.BloodType
   }
 
+  export type NestedEnumGenderFilter<$PrismaModel = never> = {
+    equals?: $Enums.Gender | EnumGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderFilter<$PrismaModel> | $Enums.Gender
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -10996,6 +13145,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBloodTypeFilter<$PrismaModel>
     _max?: NestedEnumBloodTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumGenderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Gender | EnumGenderFieldRefInput<$PrismaModel>
+    in?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Gender[] | ListEnumGenderFieldRefInput<$PrismaModel>
+    not?: NestedEnumGenderWithAggregatesFilter<$PrismaModel> | $Enums.Gender
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGenderFilter<$PrismaModel>
+    _max?: NestedEnumGenderFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -11126,17 +13285,80 @@ export namespace Prisma {
     _max?: NestedEnumResponseStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDonationOutcomeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationOutcome | EnumDonationOutcomeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationOutcomeFilter<$PrismaModel> | $Enums.DonationOutcome
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumDonationOutcomeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DonationOutcome | EnumDonationOutcomeFieldRefInput<$PrismaModel>
+    in?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DonationOutcome[] | ListEnumDonationOutcomeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDonationOutcomeWithAggregatesFilter<$PrismaModel> | $Enums.DonationOutcome
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDonationOutcomeFilter<$PrismaModel>
+    _max?: NestedEnumDonationOutcomeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
   export type DonorCreateWithoutUserInput = {
     id?: string
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutDonorInput
     donations?: DonationCreateNestedManyWithoutDonorInput
     responses?: RequestResponseCreateNestedManyWithoutDonorInput
   }
@@ -11146,12 +13368,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDonorInput
     donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutDonorInput
   }
@@ -11174,6 +13398,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutHospitalInput
     requests?: BloodRequestCreateNestedManyWithoutHospitalInput
   }
 
@@ -11190,6 +13415,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutHospitalInput
     requests?: BloodRequestUncheckedCreateNestedManyWithoutHospitalInput
   }
 
@@ -11200,8 +13426,10 @@ export namespace Prisma {
 
   export type DonationCreateWithoutConfirmedByInput = {
     id?: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     request: BloodRequestCreateNestedOneWithoutDonationsInput
@@ -11214,8 +13442,10 @@ export namespace Prisma {
     requestId: string
     donorId: string
     responseId: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11246,12 +13476,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutDonorNestedInput
     donations?: DonationUpdateManyWithoutDonorNestedInput
     responses?: RequestResponseUpdateManyWithoutDonorNestedInput
   }
@@ -11261,12 +13493,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutDonorNestedInput
     donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutDonorNestedInput
   }
@@ -11295,6 +13529,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutHospitalNestedInput
     requests?: BloodRequestUpdateManyWithoutHospitalNestedInput
   }
 
@@ -11311,6 +13546,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutHospitalNestedInput
     requests?: BloodRequestUncheckedUpdateManyWithoutHospitalNestedInput
   }
 
@@ -11338,11 +13574,47 @@ export namespace Prisma {
     requestId?: StringFilter<"Donation"> | string
     donorId?: StringFilter<"Donation"> | string
     responseId?: StringFilter<"Donation"> | string
-    units?: IntFilter<"Donation"> | number
+    units?: IntNullableFilter<"Donation"> | number | null
+    notes?: StringNullableFilter<"Donation"> | string | null
+    donationOutcome?: EnumDonationOutcomeFilter<"Donation"> | $Enums.DonationOutcome
     confirmedById?: StringFilter<"Donation"> | string
-    confirmedAt?: DateTimeFilter<"Donation"> | Date | string
+    outcomeRecordedAt?: DateTimeFilter<"Donation"> | Date | string
     createdAt?: DateTimeFilter<"Donation"> | Date | string
     updatedAt?: DateTimeFilter<"Donation"> | Date | string
+  }
+
+  export type NotificationCreateWithoutDonorInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hospital?: HospitalCreateNestedOneWithoutNotificationsInput
+    request?: BloodRequestCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutDonorInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    hospitalId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutDonorInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type NotificationCreateManyDonorInputEnvelope = {
+    data: NotificationCreateManyDonorInput | NotificationCreateManyDonorInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutDonorInput = {
@@ -11374,8 +13646,10 @@ export namespace Prisma {
 
   export type DonationCreateWithoutDonorInput = {
     id?: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     request: BloodRequestCreateNestedOneWithoutDonationsInput
@@ -11387,9 +13661,11 @@ export namespace Prisma {
     id?: string
     requestId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11430,6 +13706,38 @@ export namespace Prisma {
   export type RequestResponseCreateManyDonorInputEnvelope = {
     data: RequestResponseCreateManyDonorInput | RequestResponseCreateManyDonorInput[]
     skipDuplicates?: boolean
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutDonorInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutDonorInput, NotificationUncheckedUpdateWithoutDonorInput>
+    create: XOR<NotificationCreateWithoutDonorInput, NotificationUncheckedCreateWithoutDonorInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutDonorInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutDonorInput, NotificationUncheckedUpdateWithoutDonorInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutDonorInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutDonorInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    donorId?: StringNullableFilter<"Notification"> | string | null
+    hospitalId?: StringNullableFilter<"Notification"> | string | null
+    requestId?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    updatedAt?: DateTimeFilter<"Notification"> | Date | string
   }
 
   export type UserUpsertWithoutDonorInput = {
@@ -11509,6 +13817,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"RequestResponse"> | Date | string
   }
 
+  export type NotificationCreateWithoutHospitalInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donor?: DonorCreateNestedOneWithoutNotificationsInput
+    request?: BloodRequestCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutHospitalInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutHospitalInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput>
+  }
+
+  export type NotificationCreateManyHospitalInputEnvelope = {
+    data: NotificationCreateManyHospitalInput | NotificationCreateManyHospitalInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserCreateWithoutHospitalInput = {
     id?: string
     email: string
@@ -11539,12 +13881,14 @@ export namespace Prisma {
   export type BloodRequestCreateWithoutHospitalInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutRequestInput
     donations?: DonationCreateNestedManyWithoutRequestInput
     responses?: RequestResponseCreateNestedManyWithoutRequestInput
   }
@@ -11552,12 +13896,14 @@ export namespace Prisma {
   export type BloodRequestUncheckedCreateWithoutHospitalInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRequestInput
     donations?: DonationUncheckedCreateNestedManyWithoutRequestInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutRequestInput
   }
@@ -11570,6 +13916,22 @@ export namespace Prisma {
   export type BloodRequestCreateManyHospitalInputEnvelope = {
     data: BloodRequestCreateManyHospitalInput | BloodRequestCreateManyHospitalInput[]
     skipDuplicates?: boolean
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutHospitalInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutHospitalInput, NotificationUncheckedUpdateWithoutHospitalInput>
+    create: XOR<NotificationCreateWithoutHospitalInput, NotificationUncheckedCreateWithoutHospitalInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutHospitalInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutHospitalInput, NotificationUncheckedUpdateWithoutHospitalInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutHospitalInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutHospitalInput>
   }
 
   export type UserUpsertWithoutHospitalInput = {
@@ -11628,12 +13990,47 @@ export namespace Prisma {
     id?: StringFilter<"BloodRequest"> | string
     hospitalId?: StringFilter<"BloodRequest"> | string
     bloodType?: EnumBloodTypeFilter<"BloodRequest"> | $Enums.BloodType
-    units?: IntFilter<"BloodRequest"> | number
+    unitsRequired?: IntFilter<"BloodRequest"> | number
+    unitsFulfilled?: IntFilter<"BloodRequest"> | number
     notes?: StringNullableFilter<"BloodRequest"> | string | null
     urgencyLevel?: EnumRequestUrgencyFilter<"BloodRequest"> | $Enums.RequestUrgency
     status?: EnumRequestStatusFilter<"BloodRequest"> | $Enums.RequestStatus
     createdAt?: DateTimeFilter<"BloodRequest"> | Date | string
     updatedAt?: DateTimeFilter<"BloodRequest"> | Date | string
+  }
+
+  export type NotificationCreateWithoutRequestInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donor?: DonorCreateNestedOneWithoutNotificationsInput
+    hospital?: HospitalCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutRequestInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    hospitalId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutRequestInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput>
+  }
+
+  export type NotificationCreateManyRequestInputEnvelope = {
+    data: NotificationCreateManyRequestInput | NotificationCreateManyRequestInput[]
+    skipDuplicates?: boolean
   }
 
   export type HospitalCreateWithoutRequestsInput = {
@@ -11649,6 +14046,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutHospitalInput
     user: UserCreateNestedOneWithoutHospitalInput
   }
 
@@ -11666,6 +14064,7 @@ export namespace Prisma {
     contactRole: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutHospitalInput
   }
 
   export type HospitalCreateOrConnectWithoutRequestsInput = {
@@ -11675,8 +14074,10 @@ export namespace Prisma {
 
   export type DonationCreateWithoutRequestInput = {
     id?: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     donor: DonorCreateNestedOneWithoutDonationsInput
@@ -11688,9 +14089,11 @@ export namespace Prisma {
     id?: string
     donorId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11733,6 +14136,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutRequestInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutRequestInput, NotificationUncheckedUpdateWithoutRequestInput>
+    create: XOR<NotificationCreateWithoutRequestInput, NotificationUncheckedCreateWithoutRequestInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutRequestInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutRequestInput, NotificationUncheckedUpdateWithoutRequestInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutRequestInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutRequestInput>
+  }
+
   export type HospitalUpsertWithoutRequestsInput = {
     update: XOR<HospitalUpdateWithoutRequestsInput, HospitalUncheckedUpdateWithoutRequestsInput>
     create: XOR<HospitalCreateWithoutRequestsInput, HospitalUncheckedCreateWithoutRequestsInput>
@@ -11757,6 +14176,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutHospitalNestedInput
     user?: UserUpdateOneRequiredWithoutHospitalNestedInput
   }
 
@@ -11774,6 +14194,7 @@ export namespace Prisma {
     contactRole?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutHospitalNestedInput
   }
 
   export type DonationUpsertWithWhereUniqueWithoutRequestInput = {
@@ -11811,12 +14232,14 @@ export namespace Prisma {
   export type BloodRequestCreateWithoutResponsesInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutRequestInput
     hospital: HospitalCreateNestedOneWithoutRequestsInput
     donations?: DonationCreateNestedManyWithoutRequestInput
   }
@@ -11825,12 +14248,14 @@ export namespace Prisma {
     id?: string
     hospitalId: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRequestInput
     donations?: DonationUncheckedCreateNestedManyWithoutRequestInput
   }
 
@@ -11844,12 +14269,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutDonorInput
     user: UserCreateNestedOneWithoutDonorInput
     donations?: DonationCreateNestedManyWithoutDonorInput
   }
@@ -11860,12 +14287,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDonorInput
     donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
   }
 
@@ -11876,8 +14305,10 @@ export namespace Prisma {
 
   export type DonationCreateWithoutResponseInput = {
     id?: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     request: BloodRequestCreateNestedOneWithoutDonationsInput
@@ -11889,9 +14320,11 @@ export namespace Prisma {
     id?: string
     requestId: string
     donorId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11915,12 +14348,14 @@ export namespace Prisma {
   export type BloodRequestUpdateWithoutResponsesInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutRequestNestedInput
     hospital?: HospitalUpdateOneRequiredWithoutRequestsNestedInput
     donations?: DonationUpdateManyWithoutRequestNestedInput
   }
@@ -11929,12 +14364,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     hospitalId?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutRequestNestedInput
     donations?: DonationUncheckedUpdateManyWithoutRequestNestedInput
   }
 
@@ -11954,12 +14391,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutDonorNestedInput
     user?: UserUpdateOneRequiredWithoutDonorNestedInput
     donations?: DonationUpdateManyWithoutDonorNestedInput
   }
@@ -11970,12 +14409,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutDonorNestedInput
     donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
   }
 
@@ -11992,8 +14433,10 @@ export namespace Prisma {
 
   export type DonationUpdateWithoutResponseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     request?: BloodRequestUpdateOneRequiredWithoutDonationsNestedInput
@@ -12005,9 +14448,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     requestId?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12015,12 +14460,14 @@ export namespace Prisma {
   export type BloodRequestCreateWithoutDonationsInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutRequestInput
     hospital: HospitalCreateNestedOneWithoutRequestsInput
     responses?: RequestResponseCreateNestedManyWithoutRequestInput
   }
@@ -12029,12 +14476,14 @@ export namespace Prisma {
     id?: string
     hospitalId: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutRequestInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutRequestInput
   }
 
@@ -12048,12 +14497,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationCreateNestedManyWithoutDonorInput
     user: UserCreateNestedOneWithoutDonorInput
     responses?: RequestResponseCreateNestedManyWithoutDonorInput
   }
@@ -12064,12 +14515,14 @@ export namespace Prisma {
     fullName: string
     bloodType: $Enums.BloodType
     dateOfBirth: Date | string
+    gender: $Enums.Gender
     phoneNumber: string
     address: string
     state: string
     isAvailable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDonorInput
     responses?: RequestResponseUncheckedCreateNestedManyWithoutDonorInput
   }
 
@@ -12142,12 +14595,14 @@ export namespace Prisma {
   export type BloodRequestUpdateWithoutDonationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutRequestNestedInput
     hospital?: HospitalUpdateOneRequiredWithoutRequestsNestedInput
     responses?: RequestResponseUpdateManyWithoutRequestNestedInput
   }
@@ -12156,12 +14611,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     hospitalId?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutRequestNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutRequestNestedInput
   }
 
@@ -12181,12 +14638,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutDonorNestedInput
     user?: UserUpdateOneRequiredWithoutDonorNestedInput
     responses?: RequestResponseUpdateManyWithoutDonorNestedInput
   }
@@ -12197,12 +14656,14 @@ export namespace Prisma {
     fullName?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
     dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
     phoneNumber?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     state?: StringFieldUpdateOperationsInput | string
     isAvailable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutDonorNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutDonorNestedInput
   }
 
@@ -12268,21 +14729,269 @@ export namespace Prisma {
     hospital?: HospitalUncheckedUpdateOneWithoutUserNestedInput
   }
 
+  export type DonorCreateWithoutNotificationsInput = {
+    id?: string
+    fullName: string
+    bloodType: $Enums.BloodType
+    dateOfBirth: Date | string
+    gender: $Enums.Gender
+    phoneNumber: string
+    address: string
+    state: string
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDonorInput
+    donations?: DonationCreateNestedManyWithoutDonorInput
+    responses?: RequestResponseCreateNestedManyWithoutDonorInput
+  }
+
+  export type DonorUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    bloodType: $Enums.BloodType
+    dateOfBirth: Date | string
+    gender: $Enums.Gender
+    phoneNumber: string
+    address: string
+    state: string
+    isAvailable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donations?: DonationUncheckedCreateNestedManyWithoutDonorInput
+    responses?: RequestResponseUncheckedCreateNestedManyWithoutDonorInput
+  }
+
+  export type DonorCreateOrConnectWithoutNotificationsInput = {
+    where: DonorWhereUniqueInput
+    create: XOR<DonorCreateWithoutNotificationsInput, DonorUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type HospitalCreateWithoutNotificationsInput = {
+    id?: string
+    hospitalName: string
+    licenseId: string
+    phoneNumber: string
+    state: string
+    address: string
+    logoUrl?: string | null
+    contactName: string
+    contactPhone: string
+    contactRole: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutHospitalInput
+    requests?: BloodRequestCreateNestedManyWithoutHospitalInput
+  }
+
+  export type HospitalUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    userId: string
+    hospitalName: string
+    licenseId: string
+    phoneNumber: string
+    state: string
+    address: string
+    logoUrl?: string | null
+    contactName: string
+    contactPhone: string
+    contactRole: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requests?: BloodRequestUncheckedCreateNestedManyWithoutHospitalInput
+  }
+
+  export type HospitalCreateOrConnectWithoutNotificationsInput = {
+    where: HospitalWhereUniqueInput
+    create: XOR<HospitalCreateWithoutNotificationsInput, HospitalUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type BloodRequestCreateWithoutNotificationsInput = {
+    id?: string
+    bloodType: $Enums.BloodType
+    unitsRequired: number
+    unitsFulfilled?: number
+    notes?: string | null
+    urgencyLevel: $Enums.RequestUrgency
+    status?: $Enums.RequestStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hospital: HospitalCreateNestedOneWithoutRequestsInput
+    donations?: DonationCreateNestedManyWithoutRequestInput
+    responses?: RequestResponseCreateNestedManyWithoutRequestInput
+  }
+
+  export type BloodRequestUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    hospitalId: string
+    bloodType: $Enums.BloodType
+    unitsRequired: number
+    unitsFulfilled?: number
+    notes?: string | null
+    urgencyLevel: $Enums.RequestUrgency
+    status?: $Enums.RequestStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    donations?: DonationUncheckedCreateNestedManyWithoutRequestInput
+    responses?: RequestResponseUncheckedCreateNestedManyWithoutRequestInput
+  }
+
+  export type BloodRequestCreateOrConnectWithoutNotificationsInput = {
+    where: BloodRequestWhereUniqueInput
+    create: XOR<BloodRequestCreateWithoutNotificationsInput, BloodRequestUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type DonorUpsertWithoutNotificationsInput = {
+    update: XOR<DonorUpdateWithoutNotificationsInput, DonorUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<DonorCreateWithoutNotificationsInput, DonorUncheckedCreateWithoutNotificationsInput>
+    where?: DonorWhereInput
+  }
+
+  export type DonorUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: DonorWhereInput
+    data: XOR<DonorUpdateWithoutNotificationsInput, DonorUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type DonorUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDonorNestedInput
+    donations?: DonationUpdateManyWithoutDonorNestedInput
+    responses?: RequestResponseUpdateManyWithoutDonorNestedInput
+  }
+
+  export type DonorUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
+    dateOfBirth?: DateTimeFieldUpdateOperationsInput | Date | string
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    isAvailable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donations?: DonationUncheckedUpdateManyWithoutDonorNestedInput
+    responses?: RequestResponseUncheckedUpdateManyWithoutDonorNestedInput
+  }
+
+  export type HospitalUpsertWithoutNotificationsInput = {
+    update: XOR<HospitalUpdateWithoutNotificationsInput, HospitalUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<HospitalCreateWithoutNotificationsInput, HospitalUncheckedCreateWithoutNotificationsInput>
+    where?: HospitalWhereInput
+  }
+
+  export type HospitalUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: HospitalWhereInput
+    data: XOR<HospitalUpdateWithoutNotificationsInput, HospitalUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type HospitalUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    hospitalName?: StringFieldUpdateOperationsInput | string
+    licenseId?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactRole?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutHospitalNestedInput
+    requests?: BloodRequestUpdateManyWithoutHospitalNestedInput
+  }
+
+  export type HospitalUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    hospitalName?: StringFieldUpdateOperationsInput | string
+    licenseId?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    contactName?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    contactRole?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requests?: BloodRequestUncheckedUpdateManyWithoutHospitalNestedInput
+  }
+
+  export type BloodRequestUpsertWithoutNotificationsInput = {
+    update: XOR<BloodRequestUpdateWithoutNotificationsInput, BloodRequestUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<BloodRequestCreateWithoutNotificationsInput, BloodRequestUncheckedCreateWithoutNotificationsInput>
+    where?: BloodRequestWhereInput
+  }
+
+  export type BloodRequestUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: BloodRequestWhereInput
+    data: XOR<BloodRequestUpdateWithoutNotificationsInput, BloodRequestUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type BloodRequestUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
+    status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hospital?: HospitalUpdateOneRequiredWithoutRequestsNestedInput
+    donations?: DonationUpdateManyWithoutRequestNestedInput
+    responses?: RequestResponseUpdateManyWithoutRequestNestedInput
+  }
+
+  export type BloodRequestUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    hospitalId?: StringFieldUpdateOperationsInput | string
+    bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
+    status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donations?: DonationUncheckedUpdateManyWithoutRequestNestedInput
+    responses?: RequestResponseUncheckedUpdateManyWithoutRequestNestedInput
+  }
+
   export type DonationCreateManyConfirmedByInput = {
     id?: string
     requestId: string
     donorId: string
     responseId: string
-    units: number
-    confirmedAt?: Date | string
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DonationUpdateWithoutConfirmedByInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     request?: BloodRequestUpdateOneRequiredWithoutDonationsNestedInput
@@ -12295,8 +15004,10 @@ export namespace Prisma {
     requestId?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12306,19 +15017,35 @@ export namespace Prisma {
     requestId?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyDonorInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    hospitalId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DonationCreateManyDonorInput = {
     id?: string
     requestId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12331,10 +15058,48 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type NotificationUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hospital?: HospitalUpdateOneWithoutNotificationsNestedInput
+    request?: BloodRequestUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutDonorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DonationUpdateWithoutDonorInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     request?: BloodRequestUpdateOneRequiredWithoutDonationsNestedInput
@@ -12346,9 +15111,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     requestId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12357,9 +15124,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     requestId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12390,10 +15159,23 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationCreateManyHospitalInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    requestId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type BloodRequestCreateManyHospitalInput = {
     id?: string
     bloodType: $Enums.BloodType
-    units: number
+    unitsRequired: number
+    unitsFulfilled?: number
     notes?: string | null
     urgencyLevel: $Enums.RequestUrgency
     status?: $Enums.RequestStatus
@@ -12401,15 +15183,53 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type NotificationUpdateWithoutHospitalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donor?: DonorUpdateOneWithoutNotificationsNestedInput
+    request?: BloodRequestUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutHospitalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutHospitalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BloodRequestUpdateWithoutHospitalInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUpdateManyWithoutRequestNestedInput
     donations?: DonationUpdateManyWithoutRequestNestedInput
     responses?: RequestResponseUpdateManyWithoutRequestNestedInput
   }
@@ -12417,12 +15237,14 @@ export namespace Prisma {
   export type BloodRequestUncheckedUpdateWithoutHospitalInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notifications?: NotificationUncheckedUpdateManyWithoutRequestNestedInput
     donations?: DonationUncheckedUpdateManyWithoutRequestNestedInput
     responses?: RequestResponseUncheckedUpdateManyWithoutRequestNestedInput
   }
@@ -12430,7 +15252,8 @@ export namespace Prisma {
   export type BloodRequestUncheckedUpdateManyWithoutHospitalInput = {
     id?: StringFieldUpdateOperationsInput | string
     bloodType?: EnumBloodTypeFieldUpdateOperationsInput | $Enums.BloodType
-    units?: IntFieldUpdateOperationsInput | number
+    unitsRequired?: IntFieldUpdateOperationsInput | number
+    unitsFulfilled?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     urgencyLevel?: EnumRequestUrgencyFieldUpdateOperationsInput | $Enums.RequestUrgency
     status?: EnumRequestStatusFieldUpdateOperationsInput | $Enums.RequestStatus
@@ -12438,13 +15261,27 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationCreateManyRequestInput = {
+    id?: string
+    type: $Enums.NotificationType
+    title: string
+    message: string
+    isRead?: boolean
+    donorId?: string | null
+    hospitalId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DonationCreateManyRequestInput = {
     id?: string
     donorId: string
     responseId: string
-    units: number
+    units?: number | null
+    notes?: string | null
+    donationOutcome: $Enums.DonationOutcome
     confirmedById: string
-    confirmedAt?: Date | string
+    outcomeRecordedAt?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12457,10 +15294,48 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type NotificationUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    donor?: DonorUpdateOneWithoutNotificationsNestedInput
+    hospital?: HospitalUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutRequestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    donorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hospitalId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DonationUpdateWithoutRequestInput = {
     id?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     donor?: DonorUpdateOneRequiredWithoutDonationsNestedInput
@@ -12472,9 +15347,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12483,9 +15360,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     donorId?: StringFieldUpdateOperationsInput | string
     responseId?: StringFieldUpdateOperationsInput | string
-    units?: IntFieldUpdateOperationsInput | number
+    units?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    donationOutcome?: EnumDonationOutcomeFieldUpdateOperationsInput | $Enums.DonationOutcome
     confirmedById?: StringFieldUpdateOperationsInput | string
-    confirmedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    outcomeRecordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

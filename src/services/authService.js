@@ -3,6 +3,8 @@ const prisma = require("../config/prisma");
 const { generateToken } = require("../config/jwt");
 const { th } = require("zod/locales");
 
+//======================================================================
+
 const registerDonor = async (userData) => {
   const {
     email,
@@ -10,6 +12,7 @@ const registerDonor = async (userData) => {
     fullName,
     bloodType,
     dateOfBirth,
+    gender,
     phoneNumber,
     address,
     state,
@@ -29,41 +32,54 @@ const registerDonor = async (userData) => {
   }
 
   const hashedPassword = await bcrypt.hash(passwordHash, 10);
-try {
-    const user = await prisma.user.create({
+  const user = await prisma.$transaction(async (tx) => {
+    const donorUser = await tx.user.create({
       data: {
         email: normalizeEmail,
         passwordHash: hashedPassword,
         role: "DONOR",
       },
     });
-    await prisma.donor.create({
+  
+    await tx.donor.create({
       data: {
-        userId: user.id,
+        userId: donorUser.id,
         fullName,
         bloodType,
         dateOfBirth: new Date(dateOfBirth),
+        gender,
         phoneNumber,
         address,
         state,
       },
     });
-    const token = generateToken({ sub: user.id, role: user.role });
-    return {
-      user: { userid: user.id, email: user.email, role: user.role },
-      token,
-    };
-} catch (error) {
-  throw error;
-}
+    return donorUser;
+  });
+
+  const token = generateToken({ sub: user.id, role: user.role });
+  return {
+    user: { userid: user.id, email: user.email, role: user.role },
+    token,
+  };
 };
 
-//====================================================
+//======================================================================
 
 const registerHospital = async (userData) => {
-  const { email, passwordHash, hospitalName, phoneNumber, address, state, licenseId, contactName, contactPhone, contactRole } =
-    userData;
+  const {
+    email,
+    passwordHash,
+    hospitalName,
+    phoneNumber,
+    address,
+    state,
+    licenseId,
+    contactName,
+    contactPhone,
+    contactRole,
+  } = userData;
   const normalizeEmail = email.toLowerCase().trim();
+  const normalizeLicenseId = licenseId.trim();
 
   const existingUser = await prisma.user.findUnique({
     where: { email: normalizeEmail },
@@ -75,38 +91,47 @@ const registerHospital = async (userData) => {
     error.statusCode = 400;
     throw error;
   }
+  const existingLicenseId = await prisma.hospital.findUnique({
+    where: { licenseId: normalizeLicenseId },
+  });
+  if (existingLicenseId) {
+    const error = new Error("Cannot create account with this licenseId.");
+    error.statusCode = 400;
+    throw error;
+  }
 
   const hashedPassword = await bcrypt.hash(passwordHash, 10);
-  const user = await prisma.user.create({
-    data: {
-      email: normalizeEmail,
-      role: "HOSPITAL",
-      passwordHash: hashedPassword,
-    },
-  });
-  await prisma.hospital.create({
-    data: {
-      userId: user.id,
-      hospitalName,
-      phoneNumber,
-      address,
-      state,
-      licenseId,
-      contactName,
-      contactPhone,
-      contactRole,
-    },
+  const user = await prisma.$transaction(async (tx) => {
+    const hospitalUser = await tx.user.create({
+      data: {
+        role: "HOSPITAL",
+        email: normalizeEmail,
+        passwordHash: hashedPassword,
+      },
+    });
+    await tx.hospital.create({
+      data: {
+        userId: hospitalUser.id,
+        hospitalName,
+        phoneNumber,
+        address,
+        state,
+        licenseId,
+        contactName,
+        contactPhone,
+        contactRole,
+      },
+    });
+    return hospitalUser;
   });
   const token = generateToken({ sub: user.id, role: user.role });
-
   return {
     user: { userid: user.id, email: user.email, role: user.role },
     token,
   };
 };
 
-
-//====================================================
+//======================================================================
 
 const login = async (email, passwordHash) => {
   const normalizeEmail = email.toLowerCase().trim();
@@ -132,9 +157,10 @@ const login = async (email, passwordHash) => {
   };
 };
 
+//=======================================================================
+
 module.exports = {
   registerDonor,
   registerHospital,
   login,
 };
-

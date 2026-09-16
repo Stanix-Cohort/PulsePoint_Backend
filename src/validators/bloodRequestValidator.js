@@ -12,7 +12,7 @@ const validateBloodRequest = z.object({
     "O_NEGATIVE",
   ]),
 
-  units: z.coerce
+  unitsRequired: z.coerce
     .number({
       message: "Units must be a number",
     })

@@ -1,4 +1,3 @@
-// src/validators/donationValidator.js
 const { body, param } = require('express-validator');
 
 const validateCompletion = [

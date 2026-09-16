@@ -1,6 +1,6 @@
 # PulsePoint_Backend
 
-A RESTful API built with Node.js, Express, and PostgreSQL, using Supabase as the database platform. The platform connects hospitals in need of blood donations with eligible donors, featuring role-based access control, automated matching logic, and request outcome tracking.
+A RESTful API built with Node.js, Express, and PostgreSQL, using neon as the database platform. The platform connects hospitals in need of blood donations with eligible donors, featuring role-based access control, automated matching logic, and request outcome tracking.
 
 ---
 
@@ -51,7 +51,7 @@ The database separates authentication and account identity from role-specific in
   * `id` (PK, UUID)
   * `userId` (FK → `User.id`, Unique)
   * `hospitalName` (VARCHAR)
-  * `licenseId` (INT)
+  * `licenseId` (VARCHAR)
   * `phoneNumber` (VARCHAR)
   * `address` (TEXT)
   * `state` (VARCHAR)
@@ -118,19 +118,19 @@ A donor or hospital registration creates a `User` record and its corresponding r
 
 | Route | Method | Access Level | Description |
 | :--- | :--- | :--- | :--- |
-| `/api/auth/register/donor` | `POST` | Public | Register a donor account |
-| `/api/auth/register/hospital` | `POST` | Public | Register a hospital account |
-| `/api/auth/login` | `POST` | Public | Authenticate user & issue a JWT token |
-| `/api/donors/me` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
-| `/api/hospitals/profile` | `PATCH` | `DONOR` | Update donor details (phone, address) |
-| `/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
-| `/api/requests/:id/update` | `PATCH` | `HOSPITAL` | Update blood request |
-| `/api/requests` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own requests |
-| `/api/requests/mymatch` | `GET` | `DONOR` |  compatible open requests |
-| `/api/requests/:id/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
-| `/api/requests/:id/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
-| `/api/requests/:id/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion |
-| `/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/donor` | `POST` | Public | Register a donor account |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/hospital` | `POST` | Public | Register a hospital account |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/auth/login` | `POST` | Public | Authenticate user & issue a JWT token |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/donors/me` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/hospitals/profile` | `PATCH` | `DONOR` | Update donor details (phone, address) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/update` | `PATCH` | `HOSPITAL` | Update blood request |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own requests |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/mymatch` | `GET` | `DONOR` |  compatible open requests |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
 
 
 ---
@@ -140,7 +140,7 @@ A donor or hospital registration creates a `User` record and its corresponding r
 ### Prerequisites
 * Node.js (v18+ recommended)
 * npm 
-* Supabase PostgreSQL database
+* neon PostgreSQL database
 
 ### Environment Variables
 Create a `.env` file in the root directory:

@@ -135,6 +135,7 @@ exports.Prisma.DonorScalarFieldEnum = {
   fullName: 'fullName',
   bloodType: 'bloodType',
   dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
   phoneNumber: 'phoneNumber',
   address: 'address',
   state: 'state',
@@ -163,7 +164,8 @@ exports.Prisma.BloodRequestScalarFieldEnum = {
   id: 'id',
   hospitalId: 'hospitalId',
   bloodType: 'bloodType',
-  units: 'units',
+  unitsRequired: 'unitsRequired',
+  unitsFulfilled: 'unitsFulfilled',
   notes: 'notes',
   urgencyLevel: 'urgencyLevel',
   status: 'status',
@@ -186,8 +188,23 @@ exports.Prisma.DonationScalarFieldEnum = {
   donorId: 'donorId',
   responseId: 'responseId',
   units: 'units',
+  notes: 'notes',
+  donationOutcome: 'donationOutcome',
   confirmedById: 'confirmedById',
-  confirmedAt: 'confirmedAt',
+  outcomeRecordedAt: 'outcomeRecordedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  isRead: 'isRead',
+  donorId: 'donorId',
+  hospitalId: 'hospitalId',
+  requestId: 'requestId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -223,6 +240,11 @@ exports.BloodType = exports.$Enums.BloodType = {
   O_NEGATIVE: 'O_NEGATIVE'
 };
 
+exports.Gender = exports.$Enums.Gender = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE'
+};
+
 exports.RequestUrgency = exports.$Enums.RequestUrgency = {
   CRITICAL: 'CRITICAL',
   URGENT: 'URGENT',
@@ -242,13 +264,26 @@ exports.ResponseStatus = exports.$Enums.ResponseStatus = {
   WITHDRAWN: 'WITHDRAWN'
 };
 
+exports.DonationOutcome = exports.$Enums.DonationOutcome = {
+  DONATED: 'DONATED',
+  NO_SHOW: 'NO_SHOW'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  NEW_BLOOD_REQUEST: 'NEW_BLOOD_REQUEST',
+  RESPONSE_ACCEPTED: 'RESPONSE_ACCEPTED',
+  DONATION_CONFIRMED: 'DONATION_CONFIRMED',
+  REQUEST_CANCELLED: 'REQUEST_CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Donor: 'Donor',
   Hospital: 'Hospital',
   BloodRequest: 'BloodRequest',
   RequestResponse: 'RequestResponse',
-  Donation: 'Donation'
+  Donation: 'Donation',
+  Notification: 'Notification'
 };
 
 /**

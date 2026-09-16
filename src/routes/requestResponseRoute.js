@@ -1,44 +1,32 @@
-// src/routes/responseRoute.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   respondToBloodRequest,
   getAcceptedDonorsForRequest,
-  completeDonation,
-} = require('../controllers/responseController');
+} = require("../controllers/requestResponseController");
 const {
   validateResponseStatus,
   validateRequestId,
-  validateCompletion,
-} = require('../validators/responseValidator');
-const auth = require('../middleware/authMiddleware');
-const role = require('../middleware/roleMiddleware');
+} = require("../validators/requestResponseValidator");
+const auth = require("../middleware/authMiddleware");
+const role = require("../middleware/roleMiddleware");
 
 // Donor responds to a request (accept, decline, or withdraw via body status)
 router.post(
-  '/:requestId/respond',
+  "/:requestId/respond",
   auth,
-  role('DONOR'),
+  role("DONOR"),
   validateResponseStatus,
-  respondToBloodRequest
+  respondToBloodRequest,
 );
 
 // Hospital fetches all donors who accepted their request
 router.get(
-  '/:requestId/responses',
+  "/:requestId/responses",
   auth,
-  role('HOSPITAL'),
+  role("HOSPITAL"),
   validateRequestId,
-  getAcceptedDonorsForRequest
-);
-
-// Hospital confirms donation completion for a specific accepted response
-router.patch(
-  '/:requestId/responses/:responseId/complete',
-  auth,
-  role('HOSPITAL'),
-  validateCompletion,
-  completeDonation
+  getAcceptedDonorsForRequest,
 );
 
 module.exports = router;

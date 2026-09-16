@@ -1,4 +1,3 @@
-const { use } = require("react");
 const requestService = require("../services/bloodRequestService");
 const {
   findEligibleDonors,
@@ -114,8 +113,8 @@ const getDonorMatches = async (req, res, next) => {
 
 module.exports = {
   createBloodRequest,
-  getBloodRequests,
   updateBloodRequest,
   getMatchingDonors,
+  getBloodRequests,
   getDonorMatches,
 };

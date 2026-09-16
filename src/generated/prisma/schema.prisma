@@ -50,6 +50,23 @@ enum ResponseStatus {
   WITHDRAWN
 }
 
+enum DonationOutcome {
+  DONATED
+  NO_SHOW
+}
+
+enum NotificationType {
+  NEW_BLOOD_REQUEST
+  RESPONSE_ACCEPTED
+  DONATION_CONFIRMED
+  REQUEST_CANCELLED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
 //=====================================================
 
 model User {
@@ -75,12 +92,17 @@ model Donor {
   fullName    String
   bloodType   BloodType
   dateOfBirth DateTime  @db.Date
+
+  gender Gender
+
   phoneNumber String
   address     String
   state       String
-  isAvailable Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  notifications Notification[]
 
   user      User              @relation(fields: [userId], references: [id])
   donations Donation[]
@@ -108,6 +130,8 @@ model Hospital {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  notifications Notification[]
+
   user     User           @relation(fields: [userId], references: [id])
   requests BloodRequest[]
 
@@ -117,15 +141,18 @@ model Hospital {
 //=====================================================
 
 model BloodRequest {
-  id           String         @id @default(uuid())
-  hospitalId   String
-  bloodType    BloodType
-  units        Int
-  notes        String?
-  urgencyLevel RequestUrgency
-  status       RequestStatus  @default(OPEN)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id             String         @id @default(uuid())
+  hospitalId     String
+  bloodType      BloodType
+  unitsRequired  Int
+  unitsFulfilled Int            @default(0)
+  notes          String?
+  urgencyLevel   RequestUrgency
+  status         RequestStatus  @default(OPEN)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  notifications Notification[]
 
   hospital  Hospital          @relation(fields: [hospitalId], references: [id])
   donations Donation[]
@@ -155,15 +182,18 @@ model RequestResponse {
 //=====================================================
 
 model Donation {
-  id            String   @id @default(uuid())
-  requestId     String
-  donorId       String
-  responseId    String   @unique
-  units         Int
-  confirmedById String
-  confirmedAt   DateTime @default(now())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String          @id @default(uuid())
+  requestId         String
+  donorId           String
+  responseId        String          @unique
+  units             Int?
+  notes             String?
+  donationOutcome   DonationOutcome
+  confirmedById     String
+  outcomeRecordedAt DateTime        @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   request     BloodRequest    @relation(fields: [requestId], references: [id])
   donor       Donor           @relation(fields: [donorId], references: [id])
@@ -171,6 +201,35 @@ model Donation {
   confirmedBy User            @relation(fields: [confirmedById], references: [id])
 
   @@map("donations")
+}
+
+//=======================================================
+
+model Notification {
+  id      String           @id @default(uuid())
+  type    NotificationType
+  title   String
+  message String
+  isRead  Boolean          @default(false)
+
+  // Target Recipients (One will be populated based on type)
+  donorId    String?
+  hospitalId String?
+
+  // Optional reference link
+  requestId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  donor    Donor?        @relation(fields: [donorId], references: [id], onDelete: Cascade)
+  hospital Hospital?     @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  request  BloodRequest? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+
+  @@index([donorId])
+  @@index([hospitalId])
+  @@index([requestId])
+  @@map("notifications")
 }
 
 //=====================================================

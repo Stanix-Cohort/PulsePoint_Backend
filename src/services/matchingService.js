@@ -1,4 +1,3 @@
-// src/services/matchingService.js
 
 const prisma = require("../config/prisma");
 const {
@@ -11,7 +10,7 @@ const findEligibleDonors = async (requestId) => {
   const request = await prisma.bloodRequest.findUnique({
     where: { id: requestId },
   });
-  console.log("Blood Request ID", request);
+  // console.log("Blood Request ID", request);
   if (!request) {
     const error = new Error("Blood request not found.");
     error.statusCode = 404;
@@ -70,7 +69,7 @@ const findMatchingRequests = async (userId) => {
     throw error;
   }
 
-  // 2. Determine all recipient blood types this donor can give to
+  // 2. Determine all recipient blood types this donor can donate to
   const validRecipient = getCompatibleRecipients(donor.bloodType);
 
   if (validRecipient.length === 0) {
@@ -86,12 +85,17 @@ const findMatchingRequests = async (userId) => {
     where: {
       bloodType: { in: validRecipient },
       status: { in: ["OPEN", "PARTIALLY_FULFILLED"] },
+      responses: {
+        none: {
+          donorId: donor.id,
+        },
+      },
     },
 
     select: {
       id: true,
       bloodType: true,
-      units: true,
+      unitsRequired: true,
       urgencyLevel: true,
       status: true,
       createdAt: true,
