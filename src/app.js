@@ -7,13 +7,15 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", process.env.FRONTEND_URL].filter(Boolean),
+    origin: ["http://localhost:5173", process.env.FRONTEND_URL].filter(Boolean),
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
   }),
 );
 
 app.use(express.json());
+
+
 
 // Routes
 
@@ -32,16 +34,13 @@ const donationRoute = require("./routes/donationRoute");
 const requestResponseRoute = require("./routes/requestResponseRoute");
 const notificationRoutes = require("./routes/notificationRoutes");
 
+
 app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
 app.use("/api/hospitals", hospitalRoutes);
-app.use(
-  "/api/requests",
-  bloodRequestRoute,
-  requestResponseRoute,
-  donationRoute,
-);
+app.use("/api/requests", bloodRequestRoute, requestResponseRoute, donationRoute);
 app.use("/api/notifications", notificationRoutes);
+
 
 const error = require("./middleware/errorMiddleware");
 
