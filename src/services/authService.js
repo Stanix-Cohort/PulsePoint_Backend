@@ -31,6 +31,27 @@ const registerDonor = async (userData) => {
     throw error;
   }
 
+  function parseDDMMYYYY(dateStr) {
+    if (typeof dateStr !== "string" || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr))
+      return null;
+
+    const [d, m, y] = dateStr.split("/").map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+
+    // Check valid date (prevents things like 31/02/2000)
+    return date.getUTCDate() === d && date.getUTCMonth() === m - 1
+      ? date
+      : null;
+  }
+
+  const parsedDob = parseDDMMYYYY(dateOfBirth);
+
+  if (!parsedDob) {
+    const error = new Error("dateOfBirth must be DD/MM/YYYY");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const hashedPassword = await bcrypt.hash(passwordHash, 10);
   const user = await prisma.$transaction(async (tx) => {
     const donorUser = await tx.user.create({
@@ -40,13 +61,13 @@ const registerDonor = async (userData) => {
         role: "DONOR",
       },
     });
-  
+
     await tx.donor.create({
       data: {
         userId: donorUser.id,
         fullName,
         bloodType,
-        dateOfBirth: new Date(dateOfBirth),
+        dateOfBirth: parsedDob,
         gender,
         phoneNumber,
         address,

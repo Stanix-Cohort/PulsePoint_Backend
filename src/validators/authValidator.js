@@ -29,13 +29,13 @@ const validateDonorRegistration = (req, res, next) => {
       .status(400)
       .json({ success: false, message: "Date of birth is required." });
   }
-  if (typeof dateOfBirth !== "string" || isNaN(new Date(dateOfBirth))) {
-    return res.status(400).json({
-      success: false,
-      message:
-        "Date of birth must be a valid date in the format YYYY-MM-DD or YYYY/MM/DD ",
-    });
-  }
+  // if (typeof dateOfBirth !== "string" || isNaN(new Date(dateOfBirth))) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message:
+  //       "Date of birth must be a valid date in the format YYYY-MM-DD or YYYY/MM/DD ",
+  //   });
+  // }
   if (gender !== "MALE" && gender !== "FEMALE") {
     console.log(gender);
     return res.status(400).json({
