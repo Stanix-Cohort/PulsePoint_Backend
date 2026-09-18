@@ -140,6 +140,75 @@ const getAllBloodRequests = async (userId) => {
 
 //===========================================================
 
+const getAllActiveBloodRequests = async (userId) => {
+  const hospital = await prisma.hospital.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!hospital) {
+    const error = new Error("Hospital profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const activeBloodRequests = await prisma.bloodRequest.findMany({
+    where: {
+      hospitalId: hospital.id,
+      status: { in: ["OPEN", "PARTIALLY_FULFILLED"] },
+    },
+
+    select: {
+      id: true,
+      bloodType: true,
+      unitsRequired: true,
+      urgencyLevel: true,
+      notes: true,
+      status: true,
+      createdAt: true,
+    },
+  });
+
+  return activeBloodRequests;
+};
+//===========================================================
+
+const getAllCancelledBloodRequests = async (userId) => {
+  const hospital = await prisma.hospital.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!hospital) {
+    const error = new Error("Hospital profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const cancelledBloodRequests = await prisma.bloodRequest.findMany({
+    where: {
+      hospitalId: hospital.id,
+      status: "CANCELLED",
+    },
+
+    select: {
+      id: true,
+      bloodType: true,
+      unitsRequired: true,
+      urgencyLevel: true,
+      notes: true,
+      status: true,
+      createdAt: true,
+    },
+  });
+
+  return cancelledBloodRequests;
+};
+
+//===========================================================
+
 const updateBloodRequest = async (requestId, requestData) => {
   const updateData = {};
 
@@ -172,6 +241,18 @@ const updateBloodRequest = async (requestId, requestData) => {
     throw error;
   }
 
+  if (existingRequestStatus.status === "PARTIALLY_FULFILLED" && requestData.status === "OPEN") {
+    const error = new Error("A partially fulfilled blood request cannot be updated to open.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  if ((existingRequestStatus.status === "CANCELLED" || "COMPLETED") && (requestData.status === "OPEN" || "PARTIALLY_FULFILLED")) {
+    const error = new Error("A cancelled or completed blood request cannot be updated to open or partially fulfilled.");
+    error.statusCode = 400;
+    throw error;
+  }
+
   const bloodRequest = await prisma.bloodRequest.update({
     where: {
       id: requestId,
@@ -186,4 +267,6 @@ module.exports = {
   createBloodRequest,
   getAllBloodRequests,
   updateBloodRequest,
+  getAllActiveBloodRequests,
+  getAllCancelledBloodRequests,
 };

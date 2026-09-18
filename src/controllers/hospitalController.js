@@ -53,7 +53,17 @@ const getHospitalProfile = async (req, res, next) => {
 
     const hospital = await prisma.hospital.findUnique({
       where: { userId },
-      include: { requests: true },
+      select: {
+        id: true,
+        hospitalName: true,
+        licenseId: true,
+        phoneNumber: true,
+        state: true,
+        address: true,
+        contactName: true,
+        contactPhone: true,
+        contactRole: true,
+      },
     });
 
     if (!hospital) {

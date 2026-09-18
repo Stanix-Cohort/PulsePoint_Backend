@@ -5,7 +5,7 @@ const role = require('../middleware/roleMiddleware');
 
 const router = express.Router();
 
-router.get('/me', auth, role('DONOR'), donorController.getDonorProfile);
-router.patch('/me', auth, role('DONOR'), donorController.updateDonorProfile);
+router.get('/profile', auth, role('DONOR'), donorController.getDonorProfile);
+router.patch('/profile', auth, role('DONOR'), donorController.updateDonorProfile);
 
 module.exports = router;

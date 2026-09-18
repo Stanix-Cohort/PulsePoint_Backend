@@ -5,6 +5,8 @@ const {
   getBloodRequests,
   updateBloodRequest,
   getDonorMatches,
+  getAllActiveBloodRequests,
+  getAllCancelledBloodRequests,
 
   getMatchingDonors,
 } = require("../controllers/bloodRequestController");
@@ -18,6 +20,12 @@ router.post("/", auth, role("HOSPITAL"), validate, createBloodRequest);
 
 // GET all blood requests
 router.get("/", auth, role("HOSPITAL"), getBloodRequests);
+
+// GET all active blood requests
+router.get("/active", auth, role("HOSPITAL"), getAllActiveBloodRequests);
+
+// Get all cancelled blood request
+router.get("/cancelled", auth, role("HOSPITAL"), getAllCancelledBloodRequests)
 
 // PATCH update blood request status
 router.patch("/:requestId/update", auth, role("HOSPITAL"), updateBloodRequest);

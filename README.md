@@ -121,11 +121,12 @@ A donor or hospital registration creates a `User` record and its corresponding r
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/donor` | `POST` | Public | Register a donor account |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/hospital` | `POST` | Public | Register a hospital account |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/login` | `POST` | Public | Authenticate user & issue a JWT token |
-| `https://pulsepoint-backend-n4bu.onrender.com/api/donors/me` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
-| `https://pulsepoint-backend-n4bu.onrender.com/api/hospitals/profile` | `PATCH` | `DONOR` | Update donor details (phone, address) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/donors/profile` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/hospitals/profile` | `PATCH` | `DONOR` | Update hospital details (phone, address) |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/update` | `PATCH` | `HOSPITAL` | Update blood request |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own requests |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/active` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own active requests |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/mymatch` | `GET` | `DONOR` |  compatible open requests |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
