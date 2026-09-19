@@ -111,6 +111,11 @@ const getAllBloodRequests = async (userId) => {
     where: {
       userId,
     },
+      select: {
+        hospitalName: true,
+        id: true
+      },
+    
   });
 
   if (!hospital) {
@@ -132,10 +137,14 @@ const getAllBloodRequests = async (userId) => {
       notes: true,
       status: true,
       createdAt: true,
+      
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
-  return bloodRequests;
+  return {bloodRequests, hospital};
 };
 
 //===========================================================

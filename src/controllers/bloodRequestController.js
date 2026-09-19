@@ -29,8 +29,9 @@ const getBloodRequests = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      count: bloodRequests.length,
-      data: bloodRequests,
+      hospitalName: bloodRequests.hospital.hospitalName,
+      count: bloodRequests.bloodRequests.length,
+      data: bloodRequests.bloodRequests,
     });
   } catch (error) {
     next(error);
