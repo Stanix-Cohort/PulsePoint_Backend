@@ -30,6 +30,7 @@ const getBloodRequests = async (req, res, next) => {
     res.status(200).json({
       success: true,
       hospitalName: bloodRequests.hospital.hospitalName,
+      state: bloodRequests.hospital.state,
       count: bloodRequests.bloodRequests.length,
       data: bloodRequests.bloodRequests,
     });

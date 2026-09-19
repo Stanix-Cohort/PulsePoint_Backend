@@ -113,7 +113,8 @@ const getAllBloodRequests = async (userId) => {
     },
       select: {
         hospitalName: true,
-        id: true
+        id: true,
+        state: true
       },
     
   });
