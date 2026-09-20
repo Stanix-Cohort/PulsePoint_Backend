@@ -225,7 +225,8 @@ const updateBloodRequest = async (requestId, requestData) => {
 
   if (requestData.bloodType !== undefined)
     updateData.bloodType = requestData.bloodType;
-  if (requestData.units !== undefined) updateData.units = requestData.units;
+  if (requestData.unitsRequired !== undefined)
+    updateData.unitsRequired = requestData.unitsRequired;
   if (requestData.urgencyLevel !== undefined)
     updateData.urgencyLevel = requestData.urgencyLevel;
   if (requestData.notes !== undefined) updateData.notes = requestData.notes;
@@ -268,13 +269,11 @@ const updateBloodRequest = async (requestId, requestData) => {
   }
 
   if (
-    (existingRequestStatus.status === "CANCELLED" ||
-      existingRequestStatus.status === "COMPLETED") &&
-    (requestData.status === "OPEN" ||
-      requestData.status === "PARTIALLY_FULFILLED")
+    existingRequestStatus.status === "CANCELLED" ||
+      existingRequestStatus.status === "COMPLETED" 
   ) {
     const error = new Error(
-      "A cancelled or completed blood request cannot be updated to open or partially fulfilled.",
+      "A cancelled or completed blood request cannot be updated.",
     );
     error.statusCode = 400;
     throw error;
