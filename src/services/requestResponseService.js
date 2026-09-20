@@ -201,7 +201,7 @@ const fetchAcceptedDonors = async (userId, requestId) => {
 
 //================================================
 
-const fetchDonorResponses = async (userId) => {};
+// const fetchDonorResponses = async (userId) => {};
 
 module.exports = {
   processDonorResponse,

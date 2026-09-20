@@ -7,7 +7,7 @@ const auth = require('../middleware/authMiddleware');
 const role = require('../middleware/roleMiddleware');
 
 // Hospital confirms donation completion for a specific accepted response
-router.patch(
+router.post(
   '/:requestId/responses/:responseId/complete',
   auth,
   role('HOSPITAL'),

@@ -1,10 +1,12 @@
-const prisma = require('../config/prisma');
+const { th } = require("zod/locales");
+const prisma = require("../config/prisma");
 
 const recordDonationOutcome = async (
   userId,
   requestId,
   responseId,
-  { units, donationOutcome },
+  units,
+  donationOutcome,
 ) => {
   // Validate donation outcome.
   if (!["DONATED", "NO_SHOW"].includes(donationOutcome)) {
@@ -15,16 +17,16 @@ const recordDonationOutcome = async (
     throw error;
   }
 
-  if (
-    donationOutcome === "DONATED" &&
-    (!Number.isInteger(units) || units <= 0)
-  ) {
-    const error = new Error(
-      "Please specify valid units collected for a successful donation.",
-    );
-    error.statusCode = 400;
-    throw error;
-  }
+  // if (
+  //   donationOutcome === "DONATED" &&
+  //   (!Number.isInteger(units) || units <= 0)
+  // ) {
+  //   const error = new Error(
+  //     "Please specify valid units collected for a successful donation.",
+  //   );
+  //   error.statusCode = 400;
+  //   throw error;
+  // }
 
   if (donationOutcome === "NO_SHOW" && units != null) {
     const error = new Error("A no-show donation cannot contain donated units.");
@@ -106,7 +108,7 @@ const recordDonationOutcome = async (
         requestId,
         donorId: response.donorId,
         responseId,
-        units: donationOutcome === "DONATED" ? units : null,
+        // units: donationOutcome === "DONATED" ? units : null,
         donationOutcome,
         confirmedById: userId,
       },
@@ -114,45 +116,43 @@ const recordDonationOutcome = async (
 
     // If the donor actually donated, increase the request's fulfilled quantity.
 
-    let updatedRequest = bloodRequest;
+    // let updatedRequest = bloodRequest;
 
-    if (donationOutcome === "DONATED") {
-      const newUnitsFulfilled = bloodRequest.unitsFulfilled + units;
+    // if (donationOutcome === "DONATED") {
+    //   const newUnitsFulfilled = bloodRequest.unitsFulfilled + units;
 
-      // Determine the new request status.
+    //   // Determine the new request status.
 
-      let newStatus = "PARTIALLY_FULFILLED";
+    //   let newStatus = "PARTIALLY_FULFILLED";
 
-      if (newUnitsFulfilled >= bloodRequest.unitsRequired) {
-        newStatus = "COMPLETED";
-      } else if (newUnitsFulfilled === 0) {
-        newStatus = "OPEN";
-      }
+    //   if (newUnitsFulfilled >= bloodRequest.unitsRequired) {
+    //     newStatus = "COMPLETED";
+    //   } else if (newUnitsFulfilled === 0) {
+    //     newStatus = "OPEN";
+    //   }
 
-      updatedRequest = await tx.bloodRequest.update({
-        where: {
-          id: requestId,
-        },
+    //   updatedRequest = await tx.bloodRequest.update({
+    //     where: {
+    //       id: requestId,
+    //     },
 
-        data: {
-          unitsFulfilled: newUnitsFulfilled,
-          status: newStatus,
-        },
-      });
-    }
+    //     data: {
+    //       unitsFulfilled: newUnitsFulfilled,
+    //       status: newStatus,
+    //     },
+    //   });
+    // }
 
-    return {
-      donation: newDonation,
-      request: updatedRequest,
-    };
+    return newDonation;
+    // request: updatedRequest,
   });
 
   // 4. Send tailored notification to the donor
   const message =
     donation.donationOutcome === "DONATED"
-      ? `Your donation of ${donation.units} unit(s) has been recorded.`
+      ? `Thank you for your donation for blood request of blood type ${bloodRequest.bloodType}.`
       : `Your response for request ${requestId} was recorded as a no-show.`;
-
+try {
   await createDonorNotification({
     donorId: donation.donorId,
     title:
@@ -161,7 +161,12 @@ const recordDonationOutcome = async (
         : "Donation Marked as No-Show",
     message,
     requestId,
-  }).catch(() => null);
+
+    type: "DONATION_CONFIRMED",
+  })
+} catch (error) {
+  throw error
+}
 
   return donation;
 };

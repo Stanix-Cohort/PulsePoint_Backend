@@ -20,13 +20,14 @@ const createBloodRequest = async ({ userId, data }) => {
     where: {
       hospitalId: hospital.id,
       bloodType: data.bloodType,
+      urgencyLevel: data.urgencyLevel,
       status: { in: ["OPEN", "PARTIALLY_FULFILLED"] },
     },
   });
 
   if (existingRequest) {
     const error = new Error(
-      "You already have an open request for this blood type.",
+      "You already have an open request for this blood type and urgency level.",
     );
     error.statusCode = 400;
     throw error;
@@ -43,7 +44,7 @@ const createBloodRequest = async ({ userId, data }) => {
       status: "OPEN",
     },
   });
-  console.log("Blood request notification successful");
+  // console.log("Blood request notification successful");
 
   // 4. Notify all compatible and available donors
   try {
@@ -77,7 +78,7 @@ const createBloodRequest = async ({ userId, data }) => {
           ),
         ),
       );
-      console.log("Notification sent", matchedDonors);
+      console.log("Notification sent");
     } else {
       console.log("No match notified");
     }
@@ -86,7 +87,7 @@ const createBloodRequest = async ({ userId, data }) => {
   }
 
   // 5. Return response payload
-  return {
+  return {// notificationSent: "Notification sent successfully to matched donors" || null,
     bloodRequest: {
       id: bloodRequest.id,
       bloodType: bloodRequest.bloodType,
@@ -238,11 +239,20 @@ const updateBloodRequest = async (requestId, requestData) => {
     throw error;
   }
 
+
   const existingRequestStatus = await prisma.bloodRequest.findFirst({
     where: {
       id: requestId,
     },
   });
+
+  if (!existingRequestStatus) {
+    const error = new Error("Blood request not found.");
+    error.statusCode = 404;
+    throw error;
+    
+  }
+
   if (existingRequestStatus.status === requestData.status) {
     const error = new Error(
       `The blood request status is already existing as ${updateData.status}`,
@@ -257,8 +267,15 @@ const updateBloodRequest = async (requestId, requestData) => {
     throw error;
   }
 
-  if ((existingRequestStatus.status === "CANCELLED" || "COMPLETED") && (requestData.status === "OPEN" || "PARTIALLY_FULFILLED")) {
-    const error = new Error("A cancelled or completed blood request cannot be updated to open or partially fulfilled.");
+  if (
+    (existingRequestStatus.status === "CANCELLED" ||
+      existingRequestStatus.status === "COMPLETED") &&
+    (requestData.status === "OPEN" ||
+      requestData.status === "PARTIALLY_FULFILLED")
+  ) {
+    const error = new Error(
+      "A cancelled or completed blood request cannot be updated to open or partially fulfilled.",
+    );
     error.statusCode = 400;
     throw error;
   }

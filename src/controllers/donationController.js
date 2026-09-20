@@ -1,5 +1,5 @@
 // src/controllers/donationController.js
-const { confirmDonationCompletion } = require('../services/donationService');
+const { recordDonationOutcome} = require('../services/donationService');
 const { validationResult } = require('express-validator');
 
 const completeDonation = async (req, res, next) => {
@@ -9,11 +9,11 @@ const completeDonation = async (req, res, next) => {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const userId = req.user.sub || req.user.id;
+    const userId = req.user.id;
     const { requestId, responseId } = req.params;
-    const { units } = req.body;
+    const { units, donationOutcome } = req.body;
 
-    const donation = await confirmDonationCompletion(userId, requestId, responseId, units);
+    const donation = await recordDonationOutcome(userId, requestId, responseId, units, donationOutcome);
 
     return res.status(201).json({
       success: true,

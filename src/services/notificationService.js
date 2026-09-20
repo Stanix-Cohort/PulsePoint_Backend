@@ -47,7 +47,73 @@ const createHospitalNotification = (data) =>
     hospitalId: data.hospitalId,
   });
 
+const getUserNotifications = async (userId) => {
+  if (!userId) {
+    const error = new Error("User ID is required.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Fetch user role and profile IDs
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      role: true,
+      donor: { select: { id: true } },
+      hospital: { select: { id: true } },
+    },
+  });
+
+  if (!user) {
+    const error = new Error("User not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if (!user.role) {
+    const error = new Error("User role not available.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Resolve target filter and profile 
+  let targetField = null;
+  let profileId = null;
+
+  if (user.role === "DONOR") {
+    profileId = user.donor?.id;
+    targetField = "donorId";
+  } else if (user.role === "HOSPITAL") {
+    profileId = user.hospital?.id;
+    targetField = "hospitalId";
+  } else {
+    const error = new Error(`Unsupported user role: ${user.role}`);
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Guard against missing profile records
+  if (!profileId) {
+    const error = new Error(`${user.role.toLowerCase()} profile not found.`);
+    error.statusCode = 404;
+    throw error;
+  }
+
+  //  Fetch notifications
+  const notifications = await prisma.notification.findMany({
+    where: {
+      [targetField]: profileId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return notifications;
+};
+
 module.exports = {
+  getUserNotifications,
   createNotification,
   createDonorNotification,
   createHospitalNotification,
