@@ -40,6 +40,7 @@ The database separates authentication and account identity from role-specific in
   * `fullName` (VARCHAR)
   * `bloodType` (ENUM: `A_POSITIVE`, `A_NEGATIVE`, `B_POSITIVE`, `B_NEGATIVE`, `AB_POSITIVE`, `AB_NEGATIVE`, `O_POSITIVE`, `O_NEGATIVE`)
   * `dateOfBirth` (DATE)
+  * `gender` (ENUM: `MALE`, `FEMALE`)
   * `phoneNumber` (VARCHAR)
   * `address` (TEXT)
   * `state` (VARCHAR)
@@ -51,7 +52,7 @@ The database separates authentication and account identity from role-specific in
   * `id` (PK, UUID)
   * `userId` (FK → `User.id`, Unique)
   * `hospitalName` (VARCHAR)
-  * `licenseId` (VARCHAR)
+  * `licenseId` (VARCHAR, Unique)
   * `phoneNumber` (VARCHAR)
   * `address` (TEXT)
   * `state` (VARCHAR)
@@ -66,7 +67,7 @@ The database separates authentication and account identity from role-specific in
   * `id` (PK, UUID)
   * `hospitalId` (FK → `Hospital.id`)
   * `bloodType` (ENUM: `A_POSITIVE`, `A_NEGATIVE`, `B_POSITIVE`, `B_NEGATIVE`, `AB_POSITIVE`, `AB_NEGATIVE`, `O_POSITIVE`, `O_NEGATIVE`)
-  * `units` (INTEGER)
+  * `unitsRequired` (INTEGER)
   * `urgencyLevel` (ENUM: `'CRITICAL'`, `'URGENT'`, `'ROUTINE'`)
   * `status` (ENUM: `'OPEN'`, `'PARTIALLY_FULFILLED'`, `'COMPLETED'`, `'CANCELLED'`)
   * `notes` (TEXT)
@@ -88,6 +89,7 @@ The database separates authentication and account identity from role-specific in
   * `donorId` (FK → `Donor.id`)
   * `responseId` (FK → `RequestResponse.id`, Unique)
   * `units` (INTEGER)
+  * `notes` (TEXT)
   * `confirmedBy` (FK → `User.id`)
   * `confirmedAt` (TIMESTAMPTZ)
   * `createdAt` (TIMESTAMPTZ)
@@ -121,16 +123,33 @@ A donor or hospital registration creates a `User` record and its corresponding r
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/donor` | `POST` | Public | Register a donor account |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/register/hospital` | `POST` | Public | Register a hospital account |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/auth/login` | `POST` | Public | Authenticate user & issue a JWT token |
+
+
 | `https://pulsepoint-backend-n4bu.onrender.com/api/donors/profile` | `PATCH` | `DONOR` | Update donor details (fullName, blood type, phone, address, state) |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/hospitals/profile` | `PATCH` | `DONOR` | Update hospital details (phone, address) |
+
+
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `POST` | `HOSPITAL` | Create a new blood request |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/update` | `PATCH` | `HOSPITAL` | Update blood request |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own requests |
-| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/active` | `GET` | `DONOR`, `HOSPITAL` |  HOSPITAL own active requests |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/active` | `GET` | `HOSPITAL` |  HOSPITAL own active requests |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/closed` | `GET` | `HOSPITAL` |  HOSPITAL own closed requests |
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/mymatch` | `GET` | `DONOR` |  compatible open requests |
+
+
 | `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/respond` | `POST` | `DONOR` | Respond to a request (`ACCEPTED` / `DECLINED`) |
-| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/response` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
-| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/respond` | `PATCH` | `DONOR` | Update response state (`WITHDRAWN`) |
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/responses` | `GET` | `HOSPITAL` | fetches all donors who accepted a request |
+
+
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/:requestId/responses/:responseId/complete` | `PATCH` | `HOSPITAL` | Confirm donation completion status to DONATED or NO_SHOW |
+
+
+| `https://pulsepoint-backend-n4bu.onrender.com//api/notifications` | `GET` | `DONOR, HOSPITAL` | Get notifications belonging to the authenticated user |
+| `https://pulsepoint-backend-n4bu.onrender.com//api/notifications/:notificationId/read` | `PATCH` | `DONOR, HOSPITAL` | Mark one notification belonging to the authenticated user as read |
+| `https://pulsepoint-backend-n4bu.onrender.com//api/notifications/read-all` | `PATCH` | `DONOR, HOSPITAL` |Mark one notification belonging to the authenticated user as read|
+
+
 | `https://pulsepoint-backend-n4bu.onrender.com/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
 
 
@@ -140,7 +159,6 @@ A donor or hospital registration creates a `User` record and its corresponding r
 
 ### Prerequisites
 * Node.js (v18+ recommended)
-* npm 
 * neon PostgreSQL database
 
 ### Environment Variables

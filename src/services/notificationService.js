@@ -35,17 +35,23 @@ const createNotification = async ({
   });
 };
 
+//===============================================================================
+
 const createDonorNotification = (data) =>
   createNotification({
     ...data,
     donorId: data.donorId,
   });
 
+  //===============================================================================
+
 const createHospitalNotification = (data) =>
   createNotification({
     ...data,
     hospitalId: data.hospitalId,
   });
+
+  //===============================================================================
 
 const getUserNotifications = async (userId) => {
   if (!userId) {
@@ -103,6 +109,7 @@ const getUserNotifications = async (userId) => {
   const notifications = await prisma.notification.findMany({
     where: {
       [targetField]: profileId,
+      isRead: false,
     },
     orderBy: {
       createdAt: "desc",
@@ -110,6 +117,114 @@ const getUserNotifications = async (userId) => {
   });
 
   return notifications;
+};
+
+//===============================================================================
+
+const markNotificationAsRead = async (notificationId, userId) => {
+  if (!notificationId || !userId) {
+    const error = new Error("Notification ID and User ID are required.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Fetch user to get their donor or hospital profile ID
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      role: true,
+      donor: { select: { id: true } },
+      hospital: { select: { id: true } },
+    },
+  });
+
+  if (!user) {
+    const error = new Error("User not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const profileId = user.role === "DONOR" ? user.donor?.id : user.hospital?.id;
+  const targetField = user.role === "DONOR" ? "donorId" : "hospitalId";
+
+  if (!profileId) {
+    const error = new Error("User profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Find notification and ensure ownership
+  const notification = await prisma.notification.findFirst({
+    where: {
+      id: notificationId,
+      [targetField]: profileId,
+    },
+  });
+
+  if (!notification) {
+    const error = new Error("Notification not found or access denied.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Update status to read
+  const updatedNotification = await prisma.notification.update({
+    where: { id: notificationId },
+    data: { isRead: true }, 
+  });
+
+  return updatedNotification;
+};
+
+//===============================================================================
+
+const markAllNotificationsAsRead = async (userId) => {
+  if (!userId) {
+    const error = new Error("User ID is required.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 1. Resolve user profile ID
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      role: true,
+      donor: { select: { id: true } },
+      hospital: { select: { id: true } },
+    },
+  });
+
+  if (!user) {
+    const error = new Error("User not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const profileId = user.role === "DONOR" ? user.donor?.id : user.hospital?.id;
+  const targetField = user.role === "DONOR" ? "donorId" : "hospitalId";
+
+  if (!profileId) {
+    const error = new Error("User profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // 2. Bulk update all unread notifications for this profile
+  const result = await prisma.notification.updateMany({
+    where: {
+      [targetField]: profileId,
+      isRead: false, // target only unread notifications to save database index work
+    },
+    data: {
+      isRead: true, // or status: "READ"
+    },
+  });
+
+  return {
+    message: "All notifications marked as read.",
+    updatedCount: result.count,
+  };
 };
 
 module.exports = {

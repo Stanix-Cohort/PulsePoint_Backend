@@ -218,6 +218,41 @@ const getAllCancelledBloodRequests = async (userId) => {
 
   return cancelledBloodRequests;
 };
+//===========================================================
+
+const getAllCompletedBloodRequests = async (userId) => {
+  const hospital = await prisma.hospital.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!hospital) {
+    const error = new Error("Hospital profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const completedBloodRequests = await prisma.bloodRequest.findMany({
+    where: {
+      hospitalId: hospital.id,
+      status: "COMPLETED",
+    },
+
+    select: {
+      id: true,
+      bloodType: true,
+      unitsRequired: true,
+      urgencyLevel: true,
+      notes: true,
+      status: true,
+      createdAt: true,
+
+    },
+  });
+
+  return completedBloodRequests;
+};
 
 //===========================================================
 
@@ -296,4 +331,5 @@ module.exports = {
   updateBloodRequest,
   getAllActiveBloodRequests,
   getAllCancelledBloodRequests,
+  getAllCompletedBloodRequests
 };

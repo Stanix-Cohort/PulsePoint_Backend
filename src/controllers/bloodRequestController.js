@@ -68,6 +68,21 @@ const getAllCancelledBloodRequests = async (req, res, next) => {
     next(error);
   }
 };
+//===========================================================
+
+const getAllCompletedBloodRequests = async (req, res, next) => {
+  try {
+    const bloodRequests = await requestService.getAllCompletedBloodRequests(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      count: bloodRequests.length,
+      data: bloodRequests,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //===========================================================
 
@@ -144,11 +159,12 @@ const getDonorMatches = async (req, res, next) => {
 };
 
 module.exports = {
-  createBloodRequest,
-  updateBloodRequest,
-  getMatchingDonors,
-  getBloodRequests,
-  getAllActiveBloodRequests,
-  getAllCancelledBloodRequests,
   getDonorMatches,
+  getBloodRequests,
+  getMatchingDonors,
+  updateBloodRequest,
+  createBloodRequest,
+  getAllActiveBloodRequests,
+  getAllCompletedBloodRequests,
+  getAllCancelledBloodRequests,
 };

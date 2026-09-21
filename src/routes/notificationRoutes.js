@@ -13,8 +13,8 @@ const router = express.Router();
 // Get notifications belonging to the authenticated user
 router.get("/", auth, getNotifications);
 
-// Mark one notification as read
-router.patch("/:id/read", auth, markNotificationAsRead);
+// Mark one notification belonging to the authenticated user as read
+router.patch("/:notificationId/read", auth, markNotificationAsRead);
 
 // Mark all notifications belonging to the authenticated user as read
 router.patch("/read-all", auth, markAllNotificationsAsRead);

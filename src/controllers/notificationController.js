@@ -1,7 +1,7 @@
 const notificationService = require("../services/notificationService");
 
 // ============================================================
-// GET /api/notifications
+
 // Get notifications belonging to the authenticated user
 // ============================================================
 
@@ -21,13 +21,12 @@ const getNotifications = async (req, res, next) => {
 };
 
 // ============================================================
-// PATCH /api/notifications/:id/read
 // Mark one notification as read
 // ============================================================
 
 const markNotificationAsRead = async (req, res, next) => {
   try {
-    const notification = await notificationService.markAsRead({
+    const notification = await notificationService.markNotificationAsRead({
       userId: req.user.id,
       notificationId: req.params.id,
     });
@@ -43,14 +42,14 @@ const markNotificationAsRead = async (req, res, next) => {
 };
 
 // ============================================================
-// PATCH /api/notifications/read-all
+
 // Mark all notifications belonging to the authenticated user
 // as read
 // ============================================================
 
 const markAllNotificationsAsRead = async (req, res, next) => {
   try {
-    const result = await notificationService.markAllAsRead(req.user.id);
+    const result = await notificationService.markAllNotificationsAsRead(req.user.id);
 
     res.status(200).json({
       success: true,

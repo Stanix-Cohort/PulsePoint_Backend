@@ -1,11 +1,12 @@
 const express = require("express");
 const { validate } = require("../validators/bloodRequestValidator");
 const {
-  createBloodRequest,
-  getBloodRequests,
-  updateBloodRequest,
   getDonorMatches,
+  getBloodRequests,
+  createBloodRequest,
+  updateBloodRequest,
   getAllActiveBloodRequests,
+  getAllCompletedBloodRequests,
   getAllCancelledBloodRequests,
 
   getMatchingDonors,
@@ -26,6 +27,9 @@ router.get("/active", auth, role("HOSPITAL"), getAllActiveBloodRequests);
 
 // Get all cancelled blood request
 router.get("/cancelled", auth, role("HOSPITAL"), getAllCancelledBloodRequests)
+
+// GET all completed blood requests
+router.get("/closed", auth, role("HOSPITAL"), getAllCompletedBloodRequests);
 
 // PATCH update blood request status
 router.patch("/:requestId/update", auth, role("HOSPITAL"), updateBloodRequest);
