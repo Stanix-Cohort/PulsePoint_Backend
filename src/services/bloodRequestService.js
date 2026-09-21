@@ -139,6 +139,7 @@ const getAllBloodRequests = async (userId) => {
       notes: true,
       status: true,
       createdAt: true,
+      updatedAt: true
       
     },
     orderBy: {

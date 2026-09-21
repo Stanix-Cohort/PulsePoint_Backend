@@ -85,11 +85,11 @@ const findMatchingRequests = async (userId) => {
     where: {
       bloodType: { in: validRecipient },
       status: { in: ["OPEN", "PARTIALLY_FULFILLED"] },
-      responses: {
-        none: {
-          donorId: donor.id,
-        },
-      },
+      // responses: {
+      //   none: {
+      //     donorId: donor.id,
+      //   },
+      // },
     },
 
     select: {
@@ -108,6 +108,11 @@ const findMatchingRequests = async (userId) => {
           state: true,
         },
       },
+      donations: {
+        select: {
+          donationOutcome: true,
+        }
+      }
     },
 
     orderBy: {

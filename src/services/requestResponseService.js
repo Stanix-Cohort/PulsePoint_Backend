@@ -129,6 +129,7 @@ const processDonorResponse = async (userId, requestId, status) => {
 
       case "WITHDRAWN":
         title = "Donor Withdrew Acceptance";
+        type = "RESPONSE_WITHDRAWN";
         message = `${donor.fullName} withdrew their response for request ID: ${bloodRequest.id}.`;
         break;
     }
@@ -180,6 +181,7 @@ const fetchAcceptedDonors = async (userId, requestId) => {
           fullName: true,
           bloodType: true,
           phoneNumber: true,
+          dateOfBirth:true
         },
       },
       donation: {

@@ -11,8 +11,18 @@ const {
 const auth = require("../middleware/authMiddleware");
 const role = require("../middleware/roleMiddleware");
 
-// Donor responds to a request (accept, decline, or withdraw via body status)
+// Donor responds to a request (accept, decline)
 router.post(
+  "/:requestId/respond",
+  auth,
+  role("DONOR"),
+  validateResponseStatus,
+  respondToBloodRequest,
+);
+
+
+// Donor withdraws from an accepted request
+router.patch(
   "/:requestId/respond",
   auth,
   role("DONOR"),

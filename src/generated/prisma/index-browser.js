@@ -272,6 +272,7 @@ exports.DonationOutcome = exports.$Enums.DonationOutcome = {
 exports.NotificationType = exports.$Enums.NotificationType = {
   NEW_BLOOD_REQUEST: 'NEW_BLOOD_REQUEST',
   RESPONSE_ACCEPTED: 'RESPONSE_ACCEPTED',
+  RESPONSE_WITHDRAWN: 'RESPONSE_WITHDRAWN',
   DONATION_CONFIRMED: 'DONATION_CONFIRMED',
   REQUEST_CANCELLED: 'REQUEST_CANCELLED'
 };
