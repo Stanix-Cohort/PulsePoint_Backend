@@ -13,6 +13,7 @@ const getNotifications = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
+      count: notifications.length,
       data: notifications,
     });
   } catch (error) {
@@ -26,10 +27,12 @@ const getNotifications = async (req, res, next) => {
 
 const markNotificationAsRead = async (req, res, next) => {
   try {
-    const notification = await notificationService.markNotificationAsRead({
-      userId: req.user.id,
-      notificationId: req.params.id,
-    });
+    const userId = req.user.id;
+    const {notificationId} = req.params;
+    const notification = await notificationService.markNotificationAsRead(
+      notificationId,
+      userId,
+    );
 
     res.status(200).json({
       success: true,
@@ -49,7 +52,9 @@ const markNotificationAsRead = async (req, res, next) => {
 
 const markAllNotificationsAsRead = async (req, res, next) => {
   try {
-    const result = await notificationService.markAllNotificationsAsRead(req.user.id);
+    const result = await notificationService.markAllNotificationsAsRead(
+      req.user.id,
+    );
 
     res.status(200).json({
       success: true,

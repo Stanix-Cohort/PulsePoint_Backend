@@ -228,8 +228,10 @@ const markAllNotificationsAsRead = async (userId) => {
 };
 
 module.exports = {
-  getUserNotifications,
   createNotification,
+  getUserNotifications,
+  markNotificationAsRead,
   createDonorNotification,
   createHospitalNotification,
+  markAllNotificationsAsRead,
 };
