@@ -180,6 +180,7 @@ const fetchAcceptedDonors = async (userId, requestId) => {
           id: true,
           fullName: true,
           bloodType: true,
+          gender: true,
           phoneNumber: true,
           dateOfBirth:true
         },
