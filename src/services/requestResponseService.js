@@ -108,6 +108,20 @@ const processDonorResponse = async (userId, requestId, status) => {
       },
     });
   });
+  const formatBloodType = (bloodType) => {
+    const bloodTypeMap = {
+      A_POSITIVE: "A+",
+      A_NEGATIVE: "A-",
+      B_POSITIVE: "B+",
+      B_NEGATIVE: "B-",
+      AB_POSITIVE: "AB+",
+      AB_NEGATIVE: "AB-",
+      O_POSITIVE: "O+",
+      O_NEGATIVE: "O-",
+    };
+
+    return bloodTypeMap[bloodType] || bloodType || "Unknown";
+  };
 
   // Notify the hospital when the response actually changes.
   if (response.status !== "WITHDRAWN" || status === "WITHDRAWN") {
@@ -119,7 +133,7 @@ const processDonorResponse = async (userId, requestId, status) => {
       case "ACCEPTED":
         title = "Donor Accepted Request";
         type = "RESPONSE_ACCEPTED";
-        message = `${donor.fullName} (${donor.bloodType}) accepted your request for ${bloodRequest.bloodType} blood.`;
+        message = `${donor.fullName} with blood type ${formatBloodType(donor.bloodType)} accepted your request for ${formatBloodType(bloodRequest.bloodType)} blood.`;
         break;
 
       // case "DECLINED":

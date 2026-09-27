@@ -109,7 +109,7 @@ const getUserNotifications = async (userId) => {
   const notifications = await prisma.notification.findMany({
     where: {
       [targetField]: profileId,
-      isRead: false,
+      // isRead: false,
     },
     orderBy: {
       createdAt: "desc",
