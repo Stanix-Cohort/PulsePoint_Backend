@@ -1,4 +1,3 @@
-
 const prisma = require("../config/prisma");
 const {
   getCompatibleDonors,
@@ -106,13 +105,16 @@ const findMatchingRequests = async (userId) => {
           phoneNumber: true,
           address: true,
           state: true,
+          contactName: true,
+          contactPhone: true,
+          contactRole: true,
         },
       },
       donations: {
         select: {
           donationOutcome: true,
-        }
-      }
+        },
+      },
     },
 
     orderBy: {

@@ -196,7 +196,7 @@ const fetchAcceptedDonors = async (userId, requestId) => {
           bloodType: true,
           gender: true,
           phoneNumber: true,
-          dateOfBirth:true
+          dateOfBirth: true,
         },
       },
       donation: {
