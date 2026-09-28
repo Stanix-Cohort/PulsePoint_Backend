@@ -60,9 +60,24 @@ const createBloodRequest = async ({ userId, data }) => {
       select: { id: true, fullName: true },
     });
 
+    const formatBloodType = (bloodType) => {
+      const bloodTypeMap = {
+        A_POSITIVE: "A+",
+        A_NEGATIVE: "A-",
+        B_POSITIVE: "B+",
+        B_NEGATIVE: "B-",
+        AB_POSITIVE: "AB+",
+        AB_NEGATIVE: "AB-",
+        O_POSITIVE: "O+",
+        O_NEGATIVE: "O-",
+      };
+
+      return bloodTypeMap[bloodType] || bloodType || "Unknown";
+    };
+
     if (matchedDonors.length > 0) {
       const notifTitle = `${data.bloodType} Blood Needed. Status: ${data.urgencyLevel}`;
-      const notifMessage = `${hospital.hospitalName} in ${hospital.state} requires ${data.unitsRequired} unit(s) of ${data.bloodType} blood.`;
+      const notifMessage = `${hospital.hospitalName} in ${hospital.state} requires ${data.unitsRequired} unit(s) of ${formatBloodType(data.bloodType)} blood.`;
 
       // Dispatch notifications in parallel without blocking DB response
       Promise.all(
