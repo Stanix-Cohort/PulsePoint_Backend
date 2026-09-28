@@ -9,7 +9,8 @@ const getDonorByUserId = async (userId) => {
           dateOfBirth: true,
             phoneNumber: true,
             address: true,
-            state: true,
+        state: true,
+            gender: true,
             isAvailable: true,
       },
   });
