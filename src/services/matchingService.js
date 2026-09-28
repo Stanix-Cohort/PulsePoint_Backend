@@ -97,6 +97,7 @@ const findMatchingRequests = async (userId) => {
       unitsRequired: true,
       urgencyLevel: true,
       status: true,
+      notes: true,
       createdAt: true,
 
       hospital: {
