@@ -35,8 +35,8 @@ const processDonorResponse = async (userId, requestId, status) => {
 
   //  Donors cannot respond to requests that are already closed.
   if (
-    bloodRequest.status === "COMPLETED" ||
-    bloodRequest.status === "CANCELLED"
+    (bloodRequest.status === "COMPLETED" )||
+    (bloodRequest.status === "CANCELLED")
   ) {
     const error = new Error("This blood request is no longer available.");
     error.statusCode = 400;
@@ -144,7 +144,7 @@ const processDonorResponse = async (userId, requestId, status) => {
       case "WITHDRAWN":
         title = "Donor Withdrew Acceptance";
         type = "RESPONSE_WITHDRAWN";
-        message = `${donor.fullName} withdrew their response for request ID: ${bloodRequest.id}.`;
+        message = `${donor.fullName} withdrew their response for your request of ${formatBloodType(bloodRequest.bloodType)} blood.`;
         break;
     }
 

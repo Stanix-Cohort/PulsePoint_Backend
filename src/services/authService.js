@@ -116,7 +116,7 @@ const registerHospital = async (userData) => {
     where: { licenseId: normalizeLicenseId },
   });
   if (existingLicenseId) {
-    const error = new Error("Cannot create account with this licenseId.");
+    const error = new Error("Cannot create account with this license.");
     error.statusCode = 400;
     throw error;
   }

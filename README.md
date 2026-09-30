@@ -151,8 +151,7 @@ A donor or hospital registration creates a `User` record and its corresponding r
 
 
 | `https://pulsepoint-backend-n4bu.onrender.com/api/donors/me/donations` | `GET` | `DONOR` | View authenticated donor's confirmed donation history |
-
-
+| `https://pulsepoint-backend-n4bu.onrender.com/api/requests/plus`| All blood request with details 
 ---
 
 ## 🛠 Local Setup & Development

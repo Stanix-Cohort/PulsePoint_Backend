@@ -5,6 +5,7 @@ const {
   getBloodRequests,
   createBloodRequest,
   updateBloodRequest,
+  getBloodRequestsPlus,
   getAllActiveBloodRequests,
   getAllCompletedBloodRequests,
   getAllCancelledBloodRequests,
@@ -36,6 +37,9 @@ router.patch("/:requestId/update", auth, role("HOSPITAL"), updateBloodRequest);
 
 // GET request match for donors
 router.get("/mymatch", auth, role("DONOR"), getDonorMatches);
+
+// GET all blood requests with details
+router.get("/plus", auth, role("HOSPITAL"), getBloodRequestsPlus);
 
 // GET donor matches for a specific blood request
 // router.get("/:requestId/matches", auth, role("HOSPITAL"), getMatchingDonors);

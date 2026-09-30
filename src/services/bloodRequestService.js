@@ -102,7 +102,8 @@ const createBloodRequest = async ({ userId, data }) => {
   }
 
   // 5. Return response payload
-  return {// notificationSent: "Notification sent successfully to matched donors" || null,
+  return {
+    // notificationSent: "Notification sent successfully to matched donors" || null,
     bloodRequest: {
       id: bloodRequest.id,
       bloodType: bloodRequest.bloodType,
@@ -127,12 +128,11 @@ const getAllBloodRequests = async (userId) => {
     where: {
       userId,
     },
-      select: {
-        hospitalName: true,
-        id: true,
-        state: true
-      },
-    
+    select: {
+      hospitalName: true,
+      id: true,
+      state: true,
+    },
   });
 
   if (!hospital) {
@@ -154,15 +154,14 @@ const getAllBloodRequests = async (userId) => {
       notes: true,
       status: true,
       createdAt: true,
-      updatedAt: true
-      
+      updatedAt: true,
     },
     orderBy: {
       createdAt: "desc",
     },
   });
 
-  return {bloodRequests, hospital};
+  return { bloodRequests, hospital };
 };
 
 //===========================================================
@@ -262,7 +261,6 @@ const getAllCompletedBloodRequests = async (userId) => {
       notes: true,
       status: true,
       createdAt: true,
-
     },
   });
 
@@ -291,7 +289,6 @@ const updateBloodRequest = async (requestId, requestData) => {
     throw error;
   }
 
-
   const existingRequestStatus = await prisma.bloodRequest.findFirst({
     where: {
       id: requestId,
@@ -302,7 +299,6 @@ const updateBloodRequest = async (requestId, requestData) => {
     const error = new Error("Blood request not found.");
     error.statusCode = 404;
     throw error;
-    
   }
 
   if (existingRequestStatus.status === requestData.status) {
@@ -313,15 +309,20 @@ const updateBloodRequest = async (requestId, requestData) => {
     throw error;
   }
 
-  if (existingRequestStatus.status === "PARTIALLY_FULFILLED" && requestData.status === "OPEN") {
-    const error = new Error("A partially fulfilled blood request cannot be updated to open.");
+  if (
+    existingRequestStatus.status === "PARTIALLY_FULFILLED" &&
+    requestData.status === "OPEN"
+  ) {
+    const error = new Error(
+      "A partially fulfilled blood request cannot be updated to open.",
+    );
     error.statusCode = 400;
     throw error;
   }
 
   if (
     existingRequestStatus.status === "CANCELLED" ||
-      existingRequestStatus.status === "COMPLETED" 
+    existingRequestStatus.status === "COMPLETED"
   ) {
     const error = new Error(
       "A cancelled or completed blood request cannot be updated.",
@@ -340,11 +341,80 @@ const updateBloodRequest = async (requestId, requestData) => {
   return bloodRequest;
 };
 
+//===========================================================
+
+const allBloodRequestsPlus = async (userId) => {
+  const hospital = await prisma.hospital.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      hospitalName: true,
+      id: true,
+      state: true,
+    },
+  });
+
+  if (!hospital) {
+    const error = new Error("Hospital profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const bloodRequestsPlus = await prisma.bloodRequest.findMany({
+    where: {
+      hospitalId: hospital.id,
+    },
+
+    select: {
+      id: true,
+      bloodType: true,
+      unitsRequired: true,
+      urgencyLevel: true,
+      notes: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+      responses: {
+        where: {
+          status: "ACCEPTED",
+        },
+        select: {
+          status: true,
+          createdAt: true,
+          donor: {
+            select: {
+              fullName: true,
+              bloodType: true,
+              isAvailable: true,
+              gender: true,
+              dateOfBirth: true,
+              phoneNumber: true,
+            },
+          },
+          donation: {
+            select: {
+              donationOutcome: true,
+              outcomeRecordedAt: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return { bloodRequestsPlus, hospital };
+};
+
 module.exports = {
   createBloodRequest,
-  getAllBloodRequests,
   updateBloodRequest,
+  getAllBloodRequests,
+  allBloodRequestsPlus,
   getAllActiveBloodRequests,
   getAllCancelledBloodRequests,
-  getAllCompletedBloodRequests
+  getAllCompletedBloodRequests,
 };
