@@ -11,6 +11,6 @@ router.use(authMiddleware, roleMiddleware('HOSPITAL'));
 
 router.route('/profile')
   .get(getHospitalProfile)
-  .post(validateHospitalProfile, upsertHospitalProfile);
+  .patch( upsertHospitalProfile);
 
 module.exports = router;

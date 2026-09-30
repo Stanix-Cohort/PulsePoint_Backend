@@ -3,7 +3,7 @@ const prisma = require("../config/prisma");
 // Create or Update Hospital Profile
 const upsertHospitalProfile = async (req, res, next) => {
   try {
-    const userId = req.user.sub || req.user.id;
+    const userId =  req.user.id;
     const {
       hospitalName,
       licenseId,
@@ -28,18 +28,24 @@ const upsertHospitalProfile = async (req, res, next) => {
       contactRole,
     };
 
-    const hospital = await prisma.hospital.upsert({
+    const hospital = await prisma.hospital.update({
       where: { userId },
-      update: hospitalData,
-      create: {
-        userId,
-        ...hospitalData,
-      },
+      data: hospitalData,
+      select: {
+        id: true,
+        hospitalName: true,
+        phoneNumber: true,
+        state: true,
+        address: true,
+        contactName: true,
+        contactPhone: true,
+        contactRole: true,
+      }
     });
 
     return res.status(200).json({
       success: true,
-      message: "Hospital profile saved successfully",
+      message: "Hospital profile updated successfully",
       data: hospital,
     });
   } catch (error) {
@@ -49,7 +55,7 @@ const upsertHospitalProfile = async (req, res, next) => {
 
 const getHospitalProfile = async (req, res, next) => {
   try {
-    const userId = req.user.sub || req.user.id;
+    const userId = req.user.id;
 
     const hospital = await prisma.hospital.findUnique({
       where: { userId },
