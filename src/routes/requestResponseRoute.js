@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   respondToBloodRequest,
+  getRequestResponses,
   getAcceptedDonorsForRequest,
 } = require("../controllers/requestResponseController");
 const {
@@ -37,6 +38,14 @@ router.get(
   role("HOSPITAL"),
   validateRequestId,
   getAcceptedDonorsForRequest,
+);
+
+// Donor fetches all their status responses to requests
+router.get(
+  "/responses/status",
+  auth,
+  role("DONOR"),
+  getRequestResponses,
 );
 
 module.exports = router;

@@ -25,13 +25,13 @@ const createBloodRequest = async ({ userId, data }) => {
     },
   });
 
-  if (existingRequest) {
-    const error = new Error(
-      "You already have an open request for this blood type and urgency level.",
-    );
-    error.statusCode = 400;
-    throw error;
-  }
+  // if (existingRequest) {
+  //   const error = new Error(
+  //     "You already have an open request for this blood type and urgency level.",
+  //   );
+  //   error.statusCode = 400;
+  //   throw error;
+  // }
 
   // 3. Create the blood request
   const bloodRequest = await prisma.bloodRequest.create({

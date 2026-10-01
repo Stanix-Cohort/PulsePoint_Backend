@@ -164,6 +164,32 @@ const processDonorResponse = async (userId, requestId, status) => {
 
 //===================================================================================
 
+const getRequestResponsesStatus = async (userId) => {
+  //  Find the donor profile belonging to the authenticated user.
+  const donor = await prisma.donor.findUnique({
+    where: { userId },
+  });
+
+  if (!donor) {
+    const error = new Error("Donor profile not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const responses = await prisma.requestResponse.findMany({
+    where: {
+      donorId: donor.id,
+    },
+    select: {
+      status: true,
+    },
+  });
+  return responses;
+}
+
+
+//===================================================================================
+
 const fetchAcceptedDonors = async (userId, requestId) => {
   // Fetch hospital and verify ownership of the blood request in a single query
   const bloodRequest = await prisma.bloodRequest.findFirst({
@@ -223,4 +249,5 @@ const fetchAcceptedDonors = async (userId, requestId) => {
 module.exports = {
   processDonorResponse,
   fetchAcceptedDonors,
+  getRequestResponsesStatus,
 };

@@ -2,6 +2,7 @@
 const {
   processDonorResponse,
   fetchAcceptedDonors,
+  getRequestResponsesStatus,
   // confirmDonationCompletion,
 } = require("../services/requestResponseService");
 const { validationResult } = require("express-validator");
@@ -23,6 +24,27 @@ const respondToBloodRequest = async (req, res, next) => {
       success: true,
       message: `Request response updated to ${status}`,
       data: response,
+    });
+  } catch (error) {
+    if (error.status) {
+      return res
+        .status(error.status)
+        .json({ success: false, message: error.message });
+    }
+    next(error);
+  }
+};
+
+const getRequestResponses = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const responses = await getRequestResponsesStatus(userId);
+
+    return res.status(200).json({
+      success: true,
+      count: responses.length,
+      data: responses,
     });
   } catch (error) {
     if (error.status) {
@@ -95,6 +117,7 @@ const getAcceptedDonorsForRequest = async (req, res, next) => {
 // };
 
 module.exports = {
+  getRequestResponses,
   respondToBloodRequest,
   getAcceptedDonorsForRequest,
 };
